@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
-func loginViewController() -> ViewController<(), LoginInfo> {
-    return ViewController({ _, callback in
+func loginViewController() -> Screen<(), LoginInfo> {
+    return Screen({ _, callback in
         var vc = UIStoryboard(name: "Storyboard", bundle: nil).instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
         vc.completion = callback
         return vc

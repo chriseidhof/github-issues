@@ -8,7 +8,7 @@
 
 import UIKit
 
-func tableViewController<A>(configuration: TableViewConfiguration<A>) -> ViewController<[A],A> {
+func tableViewController<A>(configuration: TableViewConfiguration<A>) -> Screen<[A],A> {
     return asyncTableViewController({ $1($0) }, configuration)
 }
 
@@ -41,7 +41,7 @@ func value2Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfig
 }
 
 
-func simpleTableViewController<A>(render: A -> String) -> ViewController<[A], A> {
+func simpleTableViewController<A>(render: A -> String) -> Screen<[A], A> {
     return tableViewController(standardCell(render))
 }
 
@@ -51,8 +51,8 @@ struct TableViewConfiguration<A> {
 }
 
 
-func asyncTableViewController<A,I>(loadData: (I, [A] -> ()) -> (), configuration: TableViewConfiguration<A>) -> ViewController<I, A> {
-    return ViewController({ (input: I, callback: A -> ()) -> UIViewController  in
+func asyncTableViewController<A,I>(loadData: (I, [A] -> ()) -> (), configuration: TableViewConfiguration<A>) -> Screen<I, A> {
+    return Screen({ (input: I, callback: A -> ()) -> UIViewController  in
         var myTableViewController = MyViewController(style: UITableViewStyle.Plain)
         loadData(input, { (items: [A]) in
             myTableViewController.items = items.map { Box($0) }

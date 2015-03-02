@@ -13,16 +13,16 @@ public class Box<T> {
     public init(_ value: T) { self.unbox = value }
 }
 
-func select<A,B,C>(vc: ViewController<B,C>, f: A -> B) -> ViewController<A,C> {
-    return ViewController { x, callback in
+func select<A,B,C>(vc: Screen<B,C>, f: A -> B) -> Screen<A,C> {
+    return Screen { x, callback in
         return vc.create(f(x)) { y in
             callback(y)
         }
     }
 }
 
-func map<A,B,C>(vc: ViewController<A,B>, f: B -> C) -> ViewController<A,C> {
-    return ViewController { x, callback in
+func map<A,B,C>(vc: Screen<A,B>, f: B -> C) -> Screen<A,C> {
+    return Screen { x, callback in
         return vc.create(x) { y in
             callback(f(y))
         }
@@ -48,7 +48,7 @@ func mapAsync<A,B,C>(vc: NavigationController<A,B>, f: (B, C -> ()) -> ()) -> Na
     }
 }
 
-struct ViewController<A,B> {
+struct Screen<A,B> {
     let create: (A,B -> ()) -> UIViewController
     
     init(_ create: (A,B -> ()) -> UIViewController) {
@@ -66,7 +66,7 @@ func run<A,B>(nc: NavigationController<A,B>, initialValue: A, finish: B -> ()) -
     }
 }
 
-func rootViewController<A,B>(vc: ViewController<A,B>) -> NavigationController<A,B> {
+func rootViewController<A,B>(vc: Screen<A,B>) -> NavigationController<A,B> {
     return NavigationController { initial, callback in
         let navController = UINavigationController()
         let rootController = vc.create(initial, { callback($0, navController) } )
@@ -77,7 +77,7 @@ func rootViewController<A,B>(vc: ViewController<A,B>) -> NavigationController<A,
 
 infix operator >>> { associativity left }
 
-func >>><A,B,C>(l: NavigationController<A,B>, r: ViewController<B,C>) -> NavigationController<A,C> {
+func >>><A,B,C>(l: NavigationController<A,B>, r: Screen<B,C>) -> NavigationController<A,C> {
     return NavigationController { x, callback in
         let nc = l.create(x, { b, nc in
             let rvc = r.create(b, { c in
@@ -89,8 +89,8 @@ func >>><A,B,C>(l: NavigationController<A,B>, r: ViewController<B,C>) -> Navigat
     }
 }
 
-func textViewController() -> ViewController<String, ()> {
-    return ViewController { string, _ in
+func textViewController() -> Screen<String, ()> {
+    return Screen { string, _ in
         var tv = TextViewController()
         tv.textView.text = string
         return tv
