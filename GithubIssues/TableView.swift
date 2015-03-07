@@ -50,8 +50,25 @@ struct TableViewConfiguration<A> {
     var style: UITableViewCellStyle = UITableViewCellStyle.Default
 }
 
+struct BarButton {
+    let title: String
+    let callback: () -> ()
+}
 
-func asyncTableViewController<A,I>(loadData: (I, [A] -> ()) -> (), configuration: TableViewConfiguration<A>) -> Screen<I, A> {
+struct NavigationItem {
+    var title: String?
+    var rightBarButtonItem: BarButton?
+
+    init(title: String? = nil, rightBarButtonItem: BarButton? = nil) {
+        self.title = title
+        self.rightBarButtonItem = rightBarButtonItem
+    }
+}
+
+let defaultNavigationItem = NavigationItem(title: nil, rightBarButtonItem: nil)
+
+
+func asyncTableViewController<A,I>(loadData: (I, [A] -> ()) -> (), configuration: TableViewConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<I, A> {
     return Screen({ (input: I, callback: A -> ()) -> UIViewController  in
         var myTableViewController = MyViewController(style: UITableViewStyle.Plain)
         loadData(input, { (items: [A]) in
@@ -66,6 +83,7 @@ func asyncTableViewController<A,I>(loadData: (I, [A] -> ()) -> (), configuration
             }
             return cell
         }
+        myTableViewController.applyNavigationItem(navigationItem)
         myTableViewController.callback = { x in
             if let boxed = x as? Box<A> {
                 callback(boxed.unbox)
@@ -75,11 +93,48 @@ func asyncTableViewController<A,I>(loadData: (I, [A] -> ()) -> (), configuration
     })
 }
 
+extension UIBarButtonItem {
+
+}
+
+var AssociatedObjectHandle: UInt8 = 0
+
+@objc class CompletionHandler: NSObject {
+    let handler: () -> ()
+    init(_ handler: () -> ()) {
+        self.handler = handler
+    }
+
+    @objc func tapped(sender: UIBarButtonItem) {
+        self.handler()
+    }
+}
+
+extension UIViewController {
+    var rightBarButtonCompletion: CompletionHandler? {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedObjectHandle) as? CompletionHandler
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedObjectHandle, newValue, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+        }
+    }
+
+    func applyNavigationItem(navigationItem: NavigationItem) {
+        self.navigationItem.title = navigationItem.title
+        if let barButton = navigationItem.rightBarButtonItem {
+            self.rightBarButtonCompletion = CompletionHandler(barButton.callback)
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: barButton.title, style: UIBarButtonItemStyle.Plain, target: self.rightBarButtonCompletion, action: "tapped:")
+
+        }
+    }
+}
+
 class MyViewController: UITableViewController {
     var cellStyle: UITableViewCellStyle = .Default
     var items: NSArray? = [] {
         didSet {
-            self.navigationItem.title = items == nil ? "Loading..." : ""
+            self.view.backgroundColor = items == nil ? UIColor.grayColor() : UIColor.whiteColor()
             self.tableView.reloadData()
         }
     }

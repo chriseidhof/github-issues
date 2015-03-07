@@ -135,6 +135,12 @@ func repositories(user: String?) -> Resource<[Repository]> {
     return jsonResource(path, .GET, [:], array(Repository.parse))
 }
 
+func star(repository: Repository) -> Resource<()> {
+    let path = "/users/starred/\(repository.owner.login)/\(repository.name)"
+    return Resource(path: path, method: .PUT, requestBody: nil, headers: [:], parse: { _ in
+        ()
+    })
+}
 
 func organizations() -> Resource<[Organization]> {
     return jsonResource("/user/orgs", .GET, [:], array(Organization.parse))

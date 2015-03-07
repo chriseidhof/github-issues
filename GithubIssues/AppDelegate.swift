@@ -20,19 +20,23 @@ func loadResource<A,B>(r: A -> Resource<B>) -> (A, B -> ()) -> () {
     }
 }
 
-func resourceTableViewController<A,B>(f: A -> Resource<[B]>, configuration: TableViewConfiguration<B>) -> Screen<A,B> {
+func resourceTableViewController<A,B>(f: A -> Resource<[B]>, configuration: TableViewConfiguration<B>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A,B> {
     let x = loadResource(f)
-    return asyncTableViewController(loadResource(f), configuration)
+    return asyncTableViewController(loadResource(f), configuration, navigationItem: navigationItem)
 }
 
 func app() -> UIViewController {
     let start = rootViewController(loginViewController())
     
-    let orgsVC : Screen<(), Organization> = resourceTableViewController({ _ in organizations() }, standardCell { $0.login })
+    let starButton = BarButton(title: "*", callback: {
+        println("Star")
+    })
+
+    let orgsVC : Screen<(), Organization> = resourceTableViewController({ _ in organizations() }, standardCell { $0.login }, navigationItem: NavigationItem(title: "Organizations", rightBarButtonItem: starButton))
     
     let reposVC : Screen<Organization, Repository> = resourceTableViewController({ $0.reposResource }, subtitleCell {
         ($0.name, $0.description_)
-    } )
+        }, navigationItem: NavigationItem(title: "Repositories") )
     
     let issuesVC: Screen<Repository, Issue> =
     resourceTableViewController({ $0.issuesResource }, subtitleCell { issue in
