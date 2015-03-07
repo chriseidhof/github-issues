@@ -13,63 +13,49 @@ public class Box<T> {
     public init(_ value: T) { self.unbox = value }
 }
 
-func select<A,B,C>(vc: Screen<B,C>, f: A -> B) -> Screen<A,C> {
-    return Screen { x, callback in
-        return vc.create(f(x)) { y in
-            callback(y)
-        }
-    }
-}
-
-func map<A,B,C>(vc: Screen<A,B>, f: B -> C) -> Screen<A,C> {
-    return Screen { x, callback in
-        return vc.create(x) { y in
+func map<A,B>(vc: Screen<A>, f: A -> B) -> Screen<B> {
+    return Screen { callback in
+        return vc.create { y in
             callback(f(y))
         }
     }
 }
 
 
-func map<A,B,C>(vc: NavigationController<A,B>, f: B -> C) -> NavigationController<A,C> {
-    return NavigationController { x, callback in
-        return vc.create(x) { (y, nc) in
+func map<A,B>(nc: NavigationController<A>, f: A -> B) -> NavigationController<B> {
+    return NavigationController { callback in
+        return nc.run { (y, nc) in
             callback(f(y), nc)
         }
     }
 }
 
-func mapAsync<A,B,C>(vc: NavigationController<A,B>, f: (B, C -> ()) -> ()) -> NavigationController<A,C> {
-    return NavigationController { x, callback in
-        return vc.create(x) { (y, nc) in
-            f(y, { c in
-                callback(c, nc)
-            })
-        }
-    }
-}
+//func mapAsync<A,B,C>(vc: NavigationController<A,B>, f: (B, C -> ()) -> ()) -> NavigationController<A,C> {
+//    return NavigationController { x, callback in
+//        return vc.create(x) { (y, nc) in
+//            f(y, { c in
+//                callback(c, nc)
+//            })
+//        }
+//    }
+//}
 
-struct Screen<A,B> {
-    let create: (A,B -> ()) -> UIViewController
+struct Screen<A> {
+    let create: (A -> ()) -> UIViewController
     
-    init(_ create: (A,B -> ()) -> UIViewController) {
+    init(_ create: (A -> ()) -> UIViewController) {
         self.create = create
     }
 }
 
-struct NavigationController<A,B> {
-    let create: (A, (B, UINavigationController) -> ()) -> UINavigationController
+struct NavigationController<A> {
+    let run: ((A, UINavigationController) -> ()) -> UINavigationController
 }
 
-func run<A,B>(nc: NavigationController<A,B>, initialValue: A, finish: B -> ()) -> UINavigationController {
-    return nc.create(initialValue) { b, _ in
-        finish(b)
-    }
-}
-
-func rootViewController<A,B>(vc: Screen<A,B>) -> NavigationController<A,B> {
-    return NavigationController { initial, callback in
+func rootViewController<A>(vc: Screen<A>) -> NavigationController<A> {
+    return NavigationController { callback in
         let navController = UINavigationController()
-        let rootController = vc.create(initial, { callback($0, navController) } )
+        let rootController = vc.create { callback($0, navController) }
         navController.viewControllers = [rootController]
         return navController
     }
@@ -77,20 +63,21 @@ func rootViewController<A,B>(vc: Screen<A,B>) -> NavigationController<A,B> {
 
 infix operator >>> { associativity left }
 
-func >>><A,B,C>(l: NavigationController<A,B>, r: Screen<B,C>) -> NavigationController<A,C> {
-    return NavigationController { x, callback in
-        let nc = l.create(x, { b, nc in
-            let rvc = r.create(b, { c in
+func >>><A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> NavigationController<B> {
+    return NavigationController(run: { (callback) -> UINavigationController in
+        let nc = l.run { a, nc in
+            let rvc = r(a).create { c in
                 callback(c, nc)
-            })
+            }
             nc.pushViewController(rvc, animated: true)
-        })
+
+        }
         return nc
-    }
+    })
 }
 
-func textViewController() -> Screen<String, ()> {
-    return Screen { string, _ in
+func textViewController(string: String) -> Screen<()> {
+    return Screen { _ in
         var tv = TextViewController()
         tv.textView.text = string
         return tv

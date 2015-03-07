@@ -8,8 +8,10 @@
 
 import UIKit
 
-func tableViewController<A>(configuration: TableViewConfiguration<A>) -> Screen<[A],A> {
-    return asyncTableViewController({ $1($0) }, configuration)
+func tableViewController<A>(configuration: TableViewConfiguration<A>) -> [A] -> Screen<A> {
+    return { items in
+        return asyncTableVC({ $0(items) }, configuration)
+    }
 }
 
 func standardCell<A>(f: A -> String) -> TableViewConfiguration<A> {
@@ -40,18 +42,18 @@ func value2Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfig
     return twoTextCell(.Value2)(f)
 }
 
-
-func simpleTableViewController<A>(render: A -> String) -> Screen<[A], A> {
-    return tableViewController(standardCell(render))
-}
-
 struct TableViewConfiguration<A> {
     var render: (UITableViewCell, A) -> () = { _ in }
     var style: UITableViewCellStyle = UITableViewCellStyle.Default
 }
 
+enum BarButtonTitle {
+    case Text(String)
+    case SystemItem(UIBarButtonSystemItem)
+}
+
 struct BarButton {
-    let title: String
+    let title: BarButtonTitle
     let callback: () -> ()
 }
 
@@ -67,14 +69,13 @@ struct NavigationItem {
 
 let defaultNavigationItem = NavigationItem(title: nil, rightBarButtonItem: nil)
 
-
-func asyncTableViewController<A,I>(loadData: (I, [A] -> ()) -> (), configuration: TableViewConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<I, A> {
-    return Screen({ (input: I, callback: A -> ()) -> UIViewController  in
+func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: TableViewConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
+    return Screen { callback in
         var myTableViewController = MyViewController(style: UITableViewStyle.Plain)
-        loadData(input, { (items: [A]) in
+        loadData { (items: [A]) in
             myTableViewController.items = items.map { Box($0) }
             return ()
-        })
+        }
         myTableViewController.cellStyle = configuration.style
         myTableViewController.items = nil // items.map { Box($0) }
         myTableViewController.configureCell = { cell, obj in
@@ -90,7 +91,7 @@ func asyncTableViewController<A,I>(loadData: (I, [A] -> ()) -> (), configuration
             }
         }
         return myTableViewController
-    })
+    }
 }
 
 extension UIBarButtonItem {
@@ -124,7 +125,12 @@ extension UIViewController {
         self.navigationItem.title = navigationItem.title
         if let barButton = navigationItem.rightBarButtonItem {
             self.rightBarButtonCompletion = CompletionHandler(barButton.callback)
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: barButton.title, style: UIBarButtonItemStyle.Plain, target: self.rightBarButtonCompletion, action: "tapped:")
+            switch barButton.title {
+            case .Text(let title):
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: title, style: UIBarButtonItemStyle.Plain, target: self.rightBarButtonCompletion, action: "tapped:")
+            case .SystemItem(let systemItem):
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: systemItem, target: self.rightBarButtonCompletion, action: "tapped:")
+            }
 
         }
     }
