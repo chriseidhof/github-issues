@@ -18,6 +18,7 @@
 		835D39A21AA1B2DA003FFAF0 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39A11AA1B2DA003FFAF0 /* Credentials.swift */; };
 		835D39A61AA1B458003FFAF0 /* GithubAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39A51AA1B458003FFAF0 /* GithubAPI.swift */; };
 		835D39A81AA22369003FFAF0 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39A71AA22369003FFAF0 /* TableView.swift */; };
+		837D190A1AAB8D5A008F71C6 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837D19091AAB8D5A008F71C6 /* Resources.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		835D39A11AA1B2DA003FFAF0 /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		835D39A51AA1B458003FFAF0 /* GithubAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubAPI.swift; sourceTree = "<group>"; };
 		835D39A71AA22369003FFAF0 /* TableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		837D19091AAB8D5A008F71C6 /* Resources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 				835D399B1AA1B0F2003FFAF0 /* APIClient.swift */,
 				835D399D1AA1B105003FFAF0 /* Network.swift */,
 				835D39A71AA22369003FFAF0 /* TableView.swift */,
+				837D19091AAB8D5A008F71C6 /* Resources.swift */,
 			);
 			name = "Library Code";
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 				835D39721AA1AA92003FFAF0 /* AppDelegate.swift in Sources */,
 				835D39921AA1AAF1003FFAF0 /* Library.swift in Sources */,
 				835D39A81AA22369003FFAF0 /* TableView.swift in Sources */,
+				837D190A1AAB8D5A008F71C6 /* Resources.swift in Sources */,
 				835D39A61AA1B458003FFAF0 /* GithubAPI.swift in Sources */,
 				835D399C1AA1B0F2003FFAF0 /* APIClient.swift in Sources */,
 			);
@@ -418,6 +422,7 @@
 				835D398D1AA1AA92003FFAF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		835D398E1AA1AA92003FFAF0 /* Build configuration list for PBXNativeTarget "GithubIssuesTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +431,7 @@
 				835D39901AA1AA92003FFAF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

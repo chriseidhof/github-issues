@@ -30,15 +30,16 @@ func map<A,B>(nc: NavigationController<A>, f: A -> B) -> NavigationController<B>
     }
 }
 
-//func mapAsync<A,B,C>(vc: NavigationController<A,B>, f: (B, C -> ()) -> ()) -> NavigationController<A,C> {
-//    return NavigationController { x, callback in
-//        return vc.create(x) { (y, nc) in
-//            f(y, { c in
-//                callback(c, nc)
-//            })
-//        }
-//    }
-//}
+extension UIViewController {
+    func presentModal<A>(screen: NavigationController<A>, callback: A -> ()) {
+        let vc = screen.run { [unowned self] x, _ in
+            callback(x)
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+        vc.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+        presentViewController(vc, animated: true, completion: nil)
+    }
+}
 
 struct Screen<A> {
     let create: (A -> ()) -> UIViewController

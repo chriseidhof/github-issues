@@ -52,9 +52,14 @@ enum BarButtonTitle {
     case SystemItem(UIBarButtonSystemItem)
 }
 
+struct BarButtonContext {
+    let button: UIBarButtonItem
+    let viewController: UIViewController
+}
+
 struct BarButton {
     let title: BarButtonTitle
-    let callback: () -> ()
+    let callback: BarButtonContext -> ()
 }
 
 struct NavigationItem {
@@ -101,13 +106,16 @@ extension UIBarButtonItem {
 var AssociatedObjectHandle: UInt8 = 0
 
 @objc class CompletionHandler: NSObject {
-    let handler: () -> ()
-    init(_ handler: () -> ()) {
+    let handler: BarButtonContext -> ()
+    weak var viewController: UIViewController?
+    init(_ handler: BarButtonContext -> (), _ viewController: UIViewController) {
         self.handler = handler
+        self.viewController = viewController
     }
 
     @objc func tapped(sender: UIBarButtonItem) {
-        self.handler()
+        let context = BarButtonContext(button: sender, viewController: viewController!)
+        self.handler(context)
     }
 }
 
@@ -124,7 +132,7 @@ extension UIViewController {
     func applyNavigationItem(navigationItem: NavigationItem) {
         self.navigationItem.title = navigationItem.title
         if let barButton = navigationItem.rightBarButtonItem {
-            self.rightBarButtonCompletion = CompletionHandler(barButton.callback)
+            self.rightBarButtonCompletion = CompletionHandler(barButton.callback, self)
             switch barButton.title {
             case .Text(let title):
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: title, style: UIBarButtonItemStyle.Plain, target: self.rightBarButtonCompletion, action: "tapped:")

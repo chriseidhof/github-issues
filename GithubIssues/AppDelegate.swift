@@ -8,34 +8,11 @@
 
 import UIKit
 
-func loadResource<B>(r: Resource<B>) -> (B -> ()) -> () {
-    return { completion in
-        request(r) { oB in
-            if let b = oB { completion(b) }
-            else {
-                let alertView = UIAlertView(title: "Error", message: "Couldn't load data", delegate: nil, cancelButtonTitle: "OK")
-                alertView.show()
-            }
-        }
-    }
-}
-
-
-
-func resourceTableViewController<B>(resource: Resource<[B]>, configuration: TableViewConfiguration<B>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<B> {
-    return asyncTableVC(loadResource(resource), configuration, navigationItem: navigationItem)
-}
-
-//func resourceTableViewController<A,B>(f: A -> Resource<[B]>, configuration: TableViewConfiguration<B>, navigationItem: NavigationItem = defaultNavigationItem) -> A -> Screen<B> {
-//return { a in
-//    let x = loadResource(f)
-//    return asyncTableViewController(loadResource(f), configuration, navigationItem: navigationItem)
-//}
-//}
-
 func app() -> UIViewController {
-    let addButton = BarButton(title: BarButtonTitle.SystemItem(UIBarButtonSystemItem.Add), callback: {
-        println("Add")
+    let addButton = BarButton(title: BarButtonTitle.SystemItem(UIBarButtonSystemItem.Add), callback: { context in
+        context.viewController.presentModal(rootViewController(loginViewController())) { loginInfo in
+            println("Login info")
+        }
     })
     
     let orgsVC: Screen<Organization> = resourceTableViewController(organizations(), standardCell { $0.login })
