@@ -69,8 +69,21 @@ extension Repository {
     }
     
     var issuesResource: Resource<[Issue]> {
-        let path = "/repos/\(owner.login)/\(name)/issues"
-        return jsonResource(path, .GET, [:], array(Issue.parse))
+        return jsonResource(issuesPath, .GET, [:], array(Issue.parse))
+    }
+
+    var issuesPath: String {
+        return path + "/issues"
+    }
+
+    var path: String {
+        return "/repos/\(owner.login)/\(name)"
+    }
+
+    func createIssueResource(title: String, body: String) -> Resource<Issue> {
+        let path = issuesPath
+        let dict: JSONDictionary = ["title": title as NSString, "body": body as NSString]
+        return jsonResource(path, Method.POST, dict, Issue.parse)
     }
 }
 
@@ -148,15 +161,10 @@ func organizations() -> Resource<[Organization]> {
 
 func array<A>(element: AnyObject -> A?)(input: AnyObject) -> [A]? {
     if let theArray = input as? [AnyObject] {
-        var result: [A] = []
-        for el in theArray {
-            if let x = element(el) {
-                result.append(x)
-            } else {
-                return nil
-            }
+        var result: [A?] = theArray.map(element)
+        if result.filter({ $0 == nil }).count == 0 {
+            return result.map { $0! }
         }
-        return result
     }
     return nil
 }

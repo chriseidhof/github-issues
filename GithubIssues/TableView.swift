@@ -47,31 +47,6 @@ struct TableViewConfiguration<A> {
     var style: UITableViewCellStyle = UITableViewCellStyle.Default
 }
 
-enum BarButtonTitle {
-    case Text(String)
-    case SystemItem(UIBarButtonSystemItem)
-}
-
-struct BarButtonContext {
-    let button: UIBarButtonItem
-    let viewController: UIViewController
-}
-
-struct BarButton {
-    let title: BarButtonTitle
-    let callback: BarButtonContext -> ()
-}
-
-struct NavigationItem {
-    var title: String?
-    var rightBarButtonItem: BarButton?
-
-    init(title: String? = nil, rightBarButtonItem: BarButton? = nil) {
-        self.title = title
-        self.rightBarButtonItem = rightBarButtonItem
-    }
-}
-
 let defaultNavigationItem = NavigationItem(title: nil, rightBarButtonItem: nil)
 
 func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: TableViewConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
@@ -101,47 +76,6 @@ func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: TableViewConfig
 
 extension UIBarButtonItem {
 
-}
-
-var AssociatedObjectHandle: UInt8 = 0
-
-@objc class CompletionHandler: NSObject {
-    let handler: BarButtonContext -> ()
-    weak var viewController: UIViewController?
-    init(_ handler: BarButtonContext -> (), _ viewController: UIViewController) {
-        self.handler = handler
-        self.viewController = viewController
-    }
-
-    @objc func tapped(sender: UIBarButtonItem) {
-        let context = BarButtonContext(button: sender, viewController: viewController!)
-        self.handler(context)
-    }
-}
-
-extension UIViewController {
-    var rightBarButtonCompletion: CompletionHandler? {
-        get {
-            return objc_getAssociatedObject(self, &AssociatedObjectHandle) as? CompletionHandler
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedObjectHandle, newValue, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-        }
-    }
-
-    func applyNavigationItem(navigationItem: NavigationItem) {
-        self.navigationItem.title = navigationItem.title
-        if let barButton = navigationItem.rightBarButtonItem {
-            self.rightBarButtonCompletion = CompletionHandler(barButton.callback, self)
-            switch barButton.title {
-            case .Text(let title):
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: title, style: UIBarButtonItemStyle.Plain, target: self.rightBarButtonCompletion, action: "tapped:")
-            case .SystemItem(let systemItem):
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: systemItem, target: self.rightBarButtonCompletion, action: "tapped:")
-            }
-
-        }
-    }
 }
 
 class MyViewController: UITableViewController {

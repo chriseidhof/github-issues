@@ -9,11 +9,16 @@
 import UIKit
 
 func app() -> UIViewController {
-    let addButton = BarButton(title: BarButtonTitle.SystemItem(UIBarButtonSystemItem.Add), callback: { context in
-        context.viewController.presentModal(rootViewController(loginViewController())) { loginInfo in
-            println("Login info")
-        }
-    })
+    let addButton : Repository -> BarButton = { repo in
+        BarButton(title: BarButtonTitle.SystemItem(UIBarButtonSystemItem.Add), callback: { context in
+            context.viewController.presentModal(rootViewController(issueEditViewController()), cancellable: true) { issueInfo in
+                let resource = repo.createIssueResource(issueInfo.title, body: issueInfo.body)
+                request(resource, { issue in
+                    println("Created issue \(issue)")
+                })
+            }
+        })
+    }
     
     let orgsVC: Screen<Organization> = resourceTableViewController(organizations(), standardCell { $0.login })
     
@@ -27,7 +32,7 @@ func app() -> UIViewController {
         resourceTableViewController(repo.issuesResource, subtitleCell { issue in
             let milestoneText = issue.milestone?.title ??  "<no milestone>"
             return (issue.title, "\(issue.creator.login) — \(issue.state.rawValue) — \(milestoneText)")
-            }, navigationItem: NavigationItem(title: repo.name, rightBarButtonItem: addButton))
+            }, navigationItem: NavigationItem(title: repo.name, rightBarButtonItem: addButton(repo)))
     }
     
 
