@@ -8,13 +8,13 @@
 
 import UIKit
 
-func tableViewController<A>(configuration: TableViewConfiguration<A>) -> [A] -> Screen<A> {
+public func tableViewController<A>(configuration: TableViewConfiguration<A>) -> [A] -> Screen<A> {
     return { items in
         return asyncTableVC({ $0(items) }, configuration)
     }
 }
 
-func standardCell<A>(f: A -> String) -> TableViewConfiguration<A> {
+public func standardCell<A>(f: A -> String) -> TableViewConfiguration<A> {
     var config: TableViewConfiguration<A> = TableViewConfiguration()
     config.render = { cell, a in
         cell.textLabel?.text = f(a)
@@ -30,26 +30,26 @@ private func twoTextCell<A>(style: UITableViewCellStyle)(_ f: A -> (title: Strin
         }, style: style)
 }
 
-func value1Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
+public func value1Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
     return twoTextCell(.Value1)(f)
 }
 
-func subtitleCell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
+public func subtitleCell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
     return twoTextCell(.Subtitle)(f)
 }
 
-func value2Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
+public func value2Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
     return twoTextCell(.Value2)(f)
 }
 
-struct TableViewConfiguration<A> {
+public struct TableViewConfiguration<A> {
     var render: (UITableViewCell, A) -> () = { _ in }
     var style: UITableViewCellStyle = UITableViewCellStyle.Default
 }
 
 let defaultNavigationItem = NavigationItem(title: nil, rightBarButtonItem: nil)
 
-func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: TableViewConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
+public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: TableViewConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
     return Screen { callback in
         var myTableViewController = MyViewController(style: UITableViewStyle.Plain)
         loadData { (items: [A]) in

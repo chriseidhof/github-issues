@@ -8,39 +8,39 @@
 
 import Foundation
 
-struct User {
-    let login: String
-    let avatarURL: NSURL?
+public struct User {
+    public let login: String
+    public let avatarURL: NSURL?
 }
 
-struct Repository {
-    let name: String
-    let owner: User
-    let description_: String
-    let url: NSURL
+public struct Repository {
+    public let name: String
+    public let owner: User
+    public let description_: String
+    public let url: NSURL
 }
 
-struct Organization {
-    let login: String
-    let reposURL: NSURL
+public struct Organization {
+    public let login: String
+    public let reposURL: NSURL
 }
 
-enum IssueState: String {
+public enum IssueState: String {
     case Open = "open"
     case Closed = "closed"
 }
 
-struct Issue {
-    let state: IssueState
-    let title: String
-    let body: String?
-    let assignee: User?
-    let creator: User
-    let milestone: Milestone?
+public struct Issue {
+    public let state: IssueState
+    public let title: String
+    public let body: String?
+    public let assignee: User?
+    public let creator: User
+    public let milestone: Milestone?
 }
 
-struct Milestone {
-    let title: String
+public struct Milestone {
+    public let title: String
     
     static func parse(input: AnyObject) -> Milestone? {
         if let dict = input as? JSONDictionary,
@@ -138,7 +138,7 @@ extension Issue {
     }
 }
 
-func repositories(user: String?) -> Resource<[Repository]> {
+public func repositories(user: String?) -> Resource<[Repository]> {
     let path: String
     if let username = user {
         path = "/users/\(username)/repos"
@@ -148,14 +148,14 @@ func repositories(user: String?) -> Resource<[Repository]> {
     return jsonResource(path, .GET, [:], array(Repository.parse))
 }
 
-func star(repository: Repository) -> Resource<()> {
+public func star(repository: Repository) -> Resource<()> {
     let path = "/users/starred/\(repository.owner.login)/\(repository.name)"
     return Resource(path: path, method: .PUT, requestBody: nil, headers: [:], parse: { _ in
         ()
     })
 }
 
-func organizations() -> Resource<[Organization]> {
+public func organizations() -> Resource<[Organization]> {
     return jsonResource("/user/orgs", .GET, [:], array(Organization.parse))
 }
 

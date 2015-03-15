@@ -13,7 +13,7 @@ public class Box<T> {
     public init(_ value: T) { self.unbox = value }
 }
 
-func map<A,B>(vc: Screen<A>, f: A -> B) -> Screen<B> {
+public func map<A,B>(vc: Screen<A>, f: A -> B) -> Screen<B> {
     return Screen { callback in
         return vc.create { y in
             callback(f(y))
@@ -22,7 +22,7 @@ func map<A,B>(vc: Screen<A>, f: A -> B) -> Screen<B> {
 }
 
 
-func map<A,B>(nc: NavigationController<A>, f: A -> B) -> NavigationController<B> {
+public func map<A,B>(nc: NavigationController<A>, f: A -> B) -> NavigationController<B> {
     return NavigationController { callback in
         return nc.run { (y, nc) in
             callback(f(y), nc)
@@ -48,19 +48,19 @@ extension UIViewController {
     }
 }
 
-struct Screen<A> {
-    let create: (A -> ()) -> UIViewController
+public struct Screen<A> {
+    public let create: (A -> ()) -> UIViewController
     
     init(_ create: (A -> ()) -> UIViewController) {
         self.create = create
     }
 }
 
-struct NavigationController<A> {
-    let run: ((A, UINavigationController) -> ()) -> UINavigationController
+public struct NavigationController<A> {
+    public let run: ((A, UINavigationController) -> ()) -> UINavigationController
 }
 
-func rootViewController<A>(vc: Screen<A>) -> NavigationController<A> {
+public func rootViewController<A>(vc: Screen<A>) -> NavigationController<A> {
     return NavigationController { callback in
         let navController = UINavigationController()
         let rootController = vc.create { callback($0, navController) }
@@ -71,7 +71,7 @@ func rootViewController<A>(vc: Screen<A>) -> NavigationController<A> {
 
 infix operator >>> { associativity left }
 
-func >>><A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> NavigationController<B> {
+public func >>><A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> NavigationController<B> {
     return NavigationController(run: { (callback) -> UINavigationController in
         let nc = l.run { a, nc in
             let rvc = r(a).create { c in
@@ -84,7 +84,7 @@ func >>><A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> NavigationContro
     })
 }
 
-func textViewController(string: String) -> Screen<()> {
+public func textViewController(string: String) -> Screen<()> {
     return Screen { _ in
         var tv = TextViewController()
         tv.textView.text = string

@@ -22,27 +22,27 @@ import UIKit
     }
 }
 
-enum BarButtonTitle {
+public enum BarButtonTitle {
     case Text(String)
     case SystemItem(UIBarButtonSystemItem)
 }
 
-struct BarButtonContext {
-    let button: UIBarButtonItem
-    let viewController: UIViewController
+public struct BarButtonContext {
+    public let button: UIBarButtonItem
+    public let viewController: UIViewController
 }
 
-struct BarButton {
-    let title: BarButtonTitle
-    let callback: BarButtonContext -> ()
+public struct BarButton {
+    public let title: BarButtonTitle
+    public let callback: BarButtonContext -> ()
 }
 
-struct NavigationItem {
+public struct NavigationItem {
     var title: String?
     var rightBarButtonItem: BarButton?
     var leftBarButtonItem: BarButton?
 
-    init(title: String? = nil, rightBarButtonItem: BarButton? = nil, leftBarButtonItem: BarButton? = nil) {
+    public init(title: String? = nil, rightBarButtonItem: BarButton? = nil, leftBarButtonItem: BarButton? = nil) {
         self.title = title
         self.rightBarButtonItem = rightBarButtonItem
         self.leftBarButtonItem = leftBarButtonItem

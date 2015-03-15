@@ -22,6 +22,6 @@ func loadResource<B>(r: Resource<B>) -> (B -> ()) -> () {
 
 
 
-func resourceTableViewController<B>(resource: Resource<[B]>, configuration: TableViewConfiguration<B>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<B> {
+public func resourceTableViewController<B>(resource: Resource<[B]>, configuration: TableViewConfiguration<B>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<B> {
     return asyncTableVC(loadResource(resource), configuration, navigationItem: navigationItem)
 }
