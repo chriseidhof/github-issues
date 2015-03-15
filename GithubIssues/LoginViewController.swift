@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FunctionalViewControllers
 
 func loginViewController() -> Screen<LoginInfo> {
     return Screen({ callback in

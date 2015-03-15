@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FunctionalViewControllers
 
 struct IssueInfo {
     let title: String

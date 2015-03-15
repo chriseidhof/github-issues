@@ -47,7 +47,7 @@ public struct TableViewConfiguration<A> {
     var style: UITableViewCellStyle = UITableViewCellStyle.Default
 }
 
-let defaultNavigationItem = NavigationItem(title: nil, rightBarButtonItem: nil)
+public let defaultNavigationItem = NavigationItem(title: nil, rightBarButtonItem: nil)
 
 public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: TableViewConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
     return Screen { callback in

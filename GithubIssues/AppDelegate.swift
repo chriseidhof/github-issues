@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FunctionalViewControllers
 
 func app() -> UIViewController {
     let addButton : Repository -> BarButton = { repo in

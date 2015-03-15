@@ -31,7 +31,7 @@ public func map<A,B>(nc: NavigationController<A>, f: A -> B) -> NavigationContro
 }
 
 extension UIViewController {
-    func presentModal<A>(screen: NavigationController<A>, cancellable: Bool, callback: A -> ()) {
+    public func presentModal<A>(screen: NavigationController<A>, cancellable: Bool, callback: A -> ()) {
         let vc = screen.run { [unowned self] x, nc in
             callback(x)
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -51,7 +51,7 @@ extension UIViewController {
 public struct Screen<A> {
     public let create: (A -> ()) -> UIViewController
     
-    init(_ create: (A -> ()) -> UIViewController) {
+    public init(_ create: (A -> ()) -> UIViewController) {
         self.create = create
     }
 }

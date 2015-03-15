@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FunctionalViewControllers
 
 public struct User {
     public let login: String

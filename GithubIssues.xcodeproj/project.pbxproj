@@ -10,16 +10,12 @@
 		835D39721AA1AA92003FFAF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39711AA1AA92003FFAF0 /* AppDelegate.swift */; };
 		835D39791AA1AA92003FFAF0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 835D39781AA1AA92003FFAF0 /* Images.xcassets */; };
 		835D39881AA1AA92003FFAF0 /* GithubIssuesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39871AA1AA92003FFAF0 /* GithubIssuesTests.swift */; };
-		835D39921AA1AAF1003FFAF0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39911AA1AAF1003FFAF0 /* Library.swift */; };
 		835D39941AA1AB6E003FFAF0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39931AA1AB6E003FFAF0 /* LoginViewController.swift */; };
 		835D39961AA1ABFD003FFAF0 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 835D39951AA1ABFD003FFAF0 /* Storyboard.storyboard */; };
-		835D399C1AA1B0F2003FFAF0 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D399B1AA1B0F2003FFAF0 /* APIClient.swift */; };
-		835D399E1AA1B105003FFAF0 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D399D1AA1B105003FFAF0 /* Network.swift */; };
 		835D39A21AA1B2DA003FFAF0 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39A11AA1B2DA003FFAF0 /* Credentials.swift */; };
 		835D39A61AA1B458003FFAF0 /* GithubAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39A51AA1B458003FFAF0 /* GithubAPI.swift */; };
-		835D39A81AA22369003FFAF0 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39A71AA22369003FFAF0 /* TableView.swift */; };
+		836927681AB5D54C0046DE26 /* FunctionalViewControllers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836927671AB5D54C0046DE26 /* FunctionalViewControllers.framework */; };
 		837D190A1AAB8D5A008F71C6 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837D19091AAB8D5A008F71C6 /* Resources.swift */; };
-		837D190C1AAB9BC2008F71C6 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837D190B1AAB9BC2008F71C6 /* UIViewController+Extensions.swift */; };
 		837D190E1AAC56AE008F71C6 /* IssueEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837D190D1AAC56AE008F71C6 /* IssueEditViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,16 +37,12 @@
 		835D39811AA1AA92003FFAF0 /* GithubIssuesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GithubIssuesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		835D39861AA1AA92003FFAF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		835D39871AA1AA92003FFAF0 /* GithubIssuesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubIssuesTests.swift; sourceTree = "<group>"; };
-		835D39911AA1AAF1003FFAF0 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		835D39931AA1AB6E003FFAF0 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		835D39951AA1ABFD003FFAF0 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
-		835D399B1AA1B0F2003FFAF0 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
-		835D399D1AA1B105003FFAF0 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		835D39A11AA1B2DA003FFAF0 /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		835D39A51AA1B458003FFAF0 /* GithubAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubAPI.swift; sourceTree = "<group>"; };
-		835D39A71AA22369003FFAF0 /* TableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		836927671AB5D54C0046DE26 /* FunctionalViewControllers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FunctionalViewControllers.framework; path = "FunctionalViewControllers/build/Debug-iphoneos/FunctionalViewControllers.framework"; sourceTree = "<group>"; };
 		837D19091AAB8D5A008F71C6 /* Resources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
-		837D190B1AAB9BC2008F71C6 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		837D190D1AAC56AE008F71C6 /* IssueEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueEditViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				836927681AB5D54C0046DE26 /* FunctionalViewControllers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +68,7 @@
 		835D39631AA1AA92003FFAF0 = {
 			isa = PBXGroup;
 			children = (
+				836927671AB5D54C0046DE26 /* FunctionalViewControllers.framework */,
 				835D396E1AA1AA92003FFAF0 /* GithubIssues */,
 				835D39841AA1AA92003FFAF0 /* GithubIssuesTests */,
 				835D396D1AA1AA92003FFAF0 /* Products */,
@@ -134,12 +128,7 @@
 		835D39A41AA1B449003FFAF0 /* Library Code */ = {
 			isa = PBXGroup;
 			children = (
-				835D39911AA1AAF1003FFAF0 /* Library.swift */,
-				835D399B1AA1B0F2003FFAF0 /* APIClient.swift */,
-				835D399D1AA1B105003FFAF0 /* Network.swift */,
-				835D39A71AA22369003FFAF0 /* TableView.swift */,
 				837D19091AAB8D5A008F71C6 /* Resources.swift */,
-				837D190B1AAB9BC2008F71C6 /* UIViewController+Extensions.swift */,
 			);
 			name = "Library Code";
 			sourceTree = "<group>";
@@ -244,16 +233,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				835D39A21AA1B2DA003FFAF0 /* Credentials.swift in Sources */,
-				835D399E1AA1B105003FFAF0 /* Network.swift in Sources */,
-				837D190C1AAB9BC2008F71C6 /* UIViewController+Extensions.swift in Sources */,
 				835D39941AA1AB6E003FFAF0 /* LoginViewController.swift in Sources */,
 				835D39721AA1AA92003FFAF0 /* AppDelegate.swift in Sources */,
-				835D39921AA1AAF1003FFAF0 /* Library.swift in Sources */,
 				837D190E1AAC56AE008F71C6 /* IssueEditViewController.swift in Sources */,
-				835D39A81AA22369003FFAF0 /* TableView.swift in Sources */,
 				837D190A1AAB8D5A008F71C6 /* Resources.swift in Sources */,
 				835D39A61AA1B458003FFAF0 /* GithubAPI.swift in Sources */,
-				835D399C1AA1B0F2003FFAF0 /* APIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,6 +345,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FunctionalViewControllers/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = GithubIssues/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -371,6 +359,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FunctionalViewControllers/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = GithubIssues/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

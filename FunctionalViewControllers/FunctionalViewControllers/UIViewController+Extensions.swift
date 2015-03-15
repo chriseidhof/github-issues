@@ -35,6 +35,10 @@ public struct BarButtonContext {
 public struct BarButton {
     public let title: BarButtonTitle
     public let callback: BarButtonContext -> ()
+    public init(title: BarButtonTitle, callback: BarButtonContext -> ()) {
+        self.title = title
+        self.callback = callback
+    }
 }
 
 public struct NavigationItem {

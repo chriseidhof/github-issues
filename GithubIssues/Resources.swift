@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FunctionalViewControllers
 
 func loadResource<B>(r: Resource<B>) -> (B -> ()) -> () {
     return { completion in
