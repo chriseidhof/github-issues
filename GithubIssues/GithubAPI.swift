@@ -7,40 +7,41 @@
 //
 
 import Foundation
+import FunctionalViewControllers
 
-struct User {
-    let login: String
-    let avatarURL: NSURL?
+public struct User {
+    public let login: String
+    public let avatarURL: NSURL?
 }
 
-struct Repository {
-    let name: String
-    let owner: User
-    let description_: String
-    let url: NSURL
+public struct Repository {
+    public let name: String
+    public let owner: User
+    public let description_: String
+    public let url: NSURL
 }
 
-struct Organization {
-    let login: String
-    let reposURL: NSURL
+public struct Organization {
+    public let login: String
+    public let reposURL: NSURL
 }
 
-enum IssueState: String {
+public enum IssueState: String {
     case Open = "open"
     case Closed = "closed"
 }
 
-struct Issue {
-    let state: IssueState
-    let title: String
-    let body: String?
-    let assignee: User?
-    let creator: User
-    let milestone: Milestone?
+public struct Issue {
+    public let state: IssueState
+    public let title: String
+    public let body: String?
+    public let assignee: User?
+    public let creator: User
+    public let milestone: Milestone?
 }
 
-struct Milestone {
-    let title: String
+public struct Milestone {
+    public let title: String
     
     static func parse(input: AnyObject) -> Milestone? {
         if let dict = input as? JSONDictionary,
@@ -69,8 +70,21 @@ extension Repository {
     }
     
     var issuesResource: Resource<[Issue]> {
-        let path = "/repos/\(owner.login)/\(name)/issues"
-        return jsonResource(path, .GET, [:], array(Issue.parse))
+        return jsonResource(issuesPath, .GET, [:], array(Issue.parse))
+    }
+
+    var issuesPath: String {
+        return path + "/issues"
+    }
+
+    var path: String {
+        return "/repos/\(owner.login)/\(name)"
+    }
+
+    func createIssueResource(title: String, body: String) -> Resource<Issue> {
+        let path = issuesPath
+        let dict: JSONDictionary = ["title": title as NSString, "body": body as NSString]
+        return jsonResource(path, Method.POST, dict, Issue.parse)
     }
 }
 
@@ -125,7 +139,7 @@ extension Issue {
     }
 }
 
-func repositories(user: String?) -> Resource<[Repository]> {
+public func repositories(user: String?) -> Resource<[Repository]> {
     let path: String
     if let username = user {
         path = "/users/\(username)/repos"
@@ -135,22 +149,23 @@ func repositories(user: String?) -> Resource<[Repository]> {
     return jsonResource(path, .GET, [:], array(Repository.parse))
 }
 
+public func star(repository: Repository) -> Resource<()> {
+    let path = "/users/starred/\(repository.owner.login)/\(repository.name)"
+    return Resource(path: path, method: .PUT, requestBody: nil, headers: [:], parse: { _ in
+        ()
+    })
+}
 
-func organizations() -> Resource<[Organization]> {
+public func organizations() -> Resource<[Organization]> {
     return jsonResource("/user/orgs", .GET, [:], array(Organization.parse))
 }
 
 func array<A>(element: AnyObject -> A?)(input: AnyObject) -> [A]? {
     if let theArray = input as? [AnyObject] {
-        var result: [A] = []
-        for el in theArray {
-            if let x = element(el) {
-                result.append(x)
-            } else {
-                return nil
-            }
+        var result: [A?] = theArray.map(element)
+        if result.filter({ $0 == nil }).count == 0 {
+            return result.map { $0! }
         }
-        return result
     }
     return nil
 }

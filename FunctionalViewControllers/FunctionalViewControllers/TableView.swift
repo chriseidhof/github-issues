@@ -8,11 +8,13 @@
 
 import UIKit
 
-func tableViewController<A>(configuration: TableViewConfiguration<A>) -> Screen<[A],A> {
-    return asyncTableViewController({ $1($0) }, configuration)
+public func tableViewController<A>(configuration: TableViewConfiguration<A>) -> [A] -> Screen<A> {
+    return { items in
+        return asyncTableVC({ $0(items) }, configuration)
+    }
 }
 
-func standardCell<A>(f: A -> String) -> TableViewConfiguration<A> {
+public func standardCell<A>(f: A -> String) -> TableViewConfiguration<A> {
     var config: TableViewConfiguration<A> = TableViewConfiguration()
     config.render = { cell, a in
         cell.textLabel?.text = f(a)
@@ -28,36 +30,32 @@ private func twoTextCell<A>(style: UITableViewCellStyle)(_ f: A -> (title: Strin
         }, style: style)
 }
 
-func value1Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
+public func value1Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
     return twoTextCell(.Value1)(f)
 }
 
-func subtitleCell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
+public func subtitleCell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
     return twoTextCell(.Subtitle)(f)
 }
 
-func value2Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
+public func value2Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
     return twoTextCell(.Value2)(f)
 }
 
-
-func simpleTableViewController<A>(render: A -> String) -> Screen<[A], A> {
-    return tableViewController(standardCell(render))
-}
-
-struct TableViewConfiguration<A> {
+public struct TableViewConfiguration<A> {
     var render: (UITableViewCell, A) -> () = { _ in }
     var style: UITableViewCellStyle = UITableViewCellStyle.Default
 }
 
+public let defaultNavigationItem = NavigationItem(title: nil, rightBarButtonItem: nil)
 
-func asyncTableViewController<A,I>(loadData: (I, [A] -> ()) -> (), configuration: TableViewConfiguration<A>) -> Screen<I, A> {
-    return Screen({ (input: I, callback: A -> ()) -> UIViewController  in
+public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: TableViewConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
+    return Screen { callback in
         var myTableViewController = MyViewController(style: UITableViewStyle.Plain)
-        loadData(input, { (items: [A]) in
+        loadData { (items: [A]) in
             myTableViewController.items = items.map { Box($0) }
             return ()
-        })
+        }
         myTableViewController.cellStyle = configuration.style
         myTableViewController.items = nil // items.map { Box($0) }
         myTableViewController.configureCell = { cell, obj in
@@ -66,20 +64,25 @@ func asyncTableViewController<A,I>(loadData: (I, [A] -> ()) -> (), configuration
             }
             return cell
         }
+        myTableViewController.applyNavigationItem(navigationItem)
         myTableViewController.callback = { x in
             if let boxed = x as? Box<A> {
                 callback(boxed.unbox)
             }
         }
         return myTableViewController
-    })
+    }
+}
+
+extension UIBarButtonItem {
+
 }
 
 class MyViewController: UITableViewController {
     var cellStyle: UITableViewCellStyle = .Default
     var items: NSArray? = [] {
         didSet {
-            self.navigationItem.title = items == nil ? "Loading..." : ""
+            self.view.backgroundColor = items == nil ? UIColor.grayColor() : UIColor.whiteColor()
             self.tableView.reloadData()
         }
     }
