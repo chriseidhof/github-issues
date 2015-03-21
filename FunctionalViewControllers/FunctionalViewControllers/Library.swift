@@ -15,7 +15,7 @@ public class Box<T> {
 
 public func map<A,B>(vc: Screen<A>, f: A -> B) -> Screen<B> {
     return Screen { callback in
-        return vc.create { y in
+        return vc.run { y in
             callback(f(y))
         }
     }
@@ -49,10 +49,10 @@ extension UIViewController {
 }
 
 public struct Screen<A> {
-    public let create: (A -> ()) -> UIViewController
+    public let run: (A -> ()) -> UIViewController
     
-    public init(_ create: (A -> ()) -> UIViewController) {
-        self.create = create
+    public init(_ run: (A -> ()) -> UIViewController) {
+        self.run = run
     }
 }
 
@@ -60,10 +60,10 @@ public struct NavigationController<A> {
     public let run: ((A, UINavigationController) -> ()) -> UINavigationController
 }
 
-public func rootViewController<A>(vc: Screen<A>) -> NavigationController<A> {
+public func navigationController<A>(vc: Screen<A>) -> NavigationController<A> {
     return NavigationController { callback in
         let navController = UINavigationController()
-        let rootController = vc.create { callback($0, navController) }
+        let rootController = vc.run { callback($0, navController) }
         navController.viewControllers = [rootController]
         return navController
     }
@@ -74,7 +74,7 @@ infix operator >>> { associativity left }
 public func >>><A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> NavigationController<B> {
     return NavigationController(run: { (callback) -> UINavigationController in
         let nc = l.run { a, nc in
-            let rvc = r(a).create { c in
+            let rvc = r(a).run { c in
                 callback(c, nc)
             }
             nc.pushViewController(rvc, animated: true)

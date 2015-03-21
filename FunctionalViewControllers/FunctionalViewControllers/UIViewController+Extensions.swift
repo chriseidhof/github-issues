@@ -41,10 +41,13 @@ public struct BarButton {
     }
 }
 
+public let defaultNavigationItem = NavigationItem(title: nil, rightBarButtonItem: nil)
+
+
 public struct NavigationItem {
-    var title: String?
-    var rightBarButtonItem: BarButton?
-    var leftBarButtonItem: BarButton?
+    public var title: String?
+    public var rightBarButtonItem: BarButton?
+    public var leftBarButtonItem: BarButton?
 
     public init(title: String? = nil, rightBarButtonItem: BarButton? = nil, leftBarButtonItem: BarButton? = nil) {
         self.title = title

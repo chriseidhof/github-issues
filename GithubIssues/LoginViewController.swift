@@ -11,11 +11,13 @@ import UIKit
 import FunctionalViewControllers
 
 func loginViewController() -> Screen<LoginInfo> {
-    return Screen({ callback in
+
+    return Screen { callback in
         var vc = UIStoryboard(name: "Storyboard", bundle: nil).instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
         vc.completion = callback
         return vc
-    })
+    }
+
 }
 
 struct LoginInfo {

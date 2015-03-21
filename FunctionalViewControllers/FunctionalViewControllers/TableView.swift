@@ -8,56 +8,52 @@
 
 import UIKit
 
-public func tableViewController<A>(configuration: TableViewConfiguration<A>) -> [A] -> Screen<A> {
+public func tableViewController<A>(configuration: CellConfiguration<A>) -> [A] -> Screen<A> {
     return { items in
         return asyncTableVC({ $0(items) }, configuration)
     }
 }
 
-public func standardCell<A>(f: A -> String) -> TableViewConfiguration<A> {
-    var config: TableViewConfiguration<A> = TableViewConfiguration()
+public func standardCell<A>(f: A -> String) -> CellConfiguration<A> {
+    var config: CellConfiguration<A> = CellConfiguration()
     config.render = { cell, a in
         cell.textLabel?.text = f(a)
     }
     return config
 }
 
-private func twoTextCell<A>(style: UITableViewCellStyle)(_ f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
-    return TableViewConfiguration(render: { (cell: UITableViewCell, a: A) in
+public func value1Cell<A>(f: A -> (title: String, subtitle: String)) -> CellConfiguration<A> {
+    return twoTextCell(.Value1)(f)
+}
+
+public func subtitleCell<A>(f: A -> (title: String, subtitle: String)) -> CellConfiguration<A> {
+    return twoTextCell(.Subtitle)(f)
+}
+
+public func value2Cell<A>(f: A -> (title: String, subtitle: String)) -> CellConfiguration<A> {
+    return twoTextCell(.Value2)(f)
+}
+
+private func twoTextCell<A>(style: UITableViewCellStyle)(_ f: A -> (title: String, subtitle: String)) -> CellConfiguration<A> {
+    return CellConfiguration(render: { (cell: UITableViewCell, a: A) in
         let (title, subtitle) = f(a)
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = subtitle
         }, style: style)
 }
 
-public func value1Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
-    return twoTextCell(.Value1)(f)
-}
-
-public func subtitleCell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
-    return twoTextCell(.Subtitle)(f)
-}
-
-public func value2Cell<A>(f: A -> (title: String, subtitle: String)) -> TableViewConfiguration<A> {
-    return twoTextCell(.Value2)(f)
-}
-
-public struct TableViewConfiguration<A> {
+public struct CellConfiguration<A> {
     var render: (UITableViewCell, A) -> () = { _ in }
     var style: UITableViewCellStyle = UITableViewCellStyle.Default
 }
 
-public let defaultNavigationItem = NavigationItem(title: nil, rightBarButtonItem: nil)
 
-public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: TableViewConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
+public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: CellConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
     return Screen { callback in
         var myTableViewController = MyViewController(style: UITableViewStyle.Plain)
-        loadData { (items: [A]) in
-            myTableViewController.items = items.map { Box($0) }
-            return ()
-        }
+        myTableViewController.items = nil
+        loadData { myTableViewController.items = $0.map { Box($0) } }
         myTableViewController.cellStyle = configuration.style
-        myTableViewController.items = nil // items.map { Box($0) }
         myTableViewController.configureCell = { cell, obj in
             if let boxed = obj as? Box<A> {
                 configuration.render(cell, boxed.unbox)
@@ -80,7 +76,7 @@ extension UIBarButtonItem {
 
 class MyViewController: UITableViewController {
     var cellStyle: UITableViewCellStyle = .Default
-    var items: NSArray? = [] {
+    var items: [AnyObject]? = [] {
         didSet {
             self.view.backgroundColor = items == nil ? UIColor.grayColor() : UIColor.whiteColor()
             self.tableView.reloadData()
@@ -88,10 +84,6 @@ class MyViewController: UITableViewController {
     }
     var callback: AnyObject -> () = { _ in () }
     var configureCell: (UITableViewCell, AnyObject) -> UITableViewCell = { $0.0 }
-    
-    override func viewDidLoad() {
-        println("load")
-    }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell : UITableViewCell = UITableViewCell(style: cellStyle, reuseIdentifier: nil) // todo dequeue

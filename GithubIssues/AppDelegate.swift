@@ -10,9 +10,10 @@ import UIKit
 import FunctionalViewControllers
 
 func app() -> UIViewController {
+
     let addButton : Repository -> BarButton = { repo in
         BarButton(title: BarButtonTitle.SystemItem(UIBarButtonSystemItem.Add), callback: { context in
-            context.viewController.presentModal(rootViewController(issueEditViewController()), cancellable: true) { issueInfo in
+            context.viewController.presentModal(navigationController(issueEditViewController()), cancellable: true) { issueInfo in
                 let resource = repo.createIssueResource(issueInfo.title, body: issueInfo.body)
                 request(resource, { issue in
                     println("Created issue \(issue)")
@@ -20,30 +21,39 @@ func app() -> UIViewController {
             }
         })
     }
+
     
-    let orgsVC: Screen<Organization> = resourceTableViewController(organizations(), standardCell { $0.login })
-    
-    let reposVC: Organization -> Screen<Repository> = { org in
-        resourceTableViewController(org.reposResource, subtitleCell {
-                    ($0.name, $0.description_)
-            }, navigationItem: NavigationItem(title: org.login))
-    }
-    
-    let issuesVC: Repository -> Screen<Issue> = { repo in
-        resourceTableViewController(repo.issuesResource, subtitleCell { issue in
-            let milestoneText = issue.milestone?.title ??  "<no milestone>"
-            return (issue.title, "\(issue.creator.login) — \(issue.state.rawValue) — \(milestoneText)")
-            }, navigationItem: NavigationItem(title: repo.name, rightBarButtonItem: addButton(repo)))
+    let orgsScreen: LoginInfo -> Screen<Organization> = { loginInfo in
+        var navigationItem = defaultNavigationItem
+        navigationItem.title = "Organizations"
+        return resourceTableViewController(organizations(), standardCell { organization in
+            organization.login
+        }, navigationItem: navigationItem)
+
     }
     
 
-    let issueBodyVC : Issue -> Screen<()> = { issue in
-        return textViewController(issue.body ?? "")
+    let reposScreen: Organization -> Screen<Repository> = { org in
+        var navigationItem = defaultNavigationItem
+        navigationItem.title = org.login
+        return resourceTableViewController(org.reposResource, subtitleCell { repo in
+            (repo.name, repo.description_)
+        }, navigationItem: navigationItem)
     }
-
-    let flow = rootViewController(orgsVC) >>> reposVC >>> issuesVC >>> issueBodyVC
-    return flow.run { _ in }
     
+    let issuesScreen: Repository -> Screen<Issue> = { repo in
+        var navigationItem = defaultNavigationItem
+        navigationItem.title = repo.name
+        navigationItem.rightBarButtonItem = addButton(repo)
+
+        return resourceTableViewController(repo.issuesResource, subtitleCell { issue in
+            (issue.title, issue.state.rawValue)
+        }, navigationItem: navigationItem)
+    }
+    
+    let flow = navigationController(loginViewController()) >>> orgsScreen >>> reposScreen >>> issuesScreen
+
+    return flow.run { _ in () }
 }
 
 @UIApplicationMain
