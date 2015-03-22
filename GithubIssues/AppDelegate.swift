@@ -29,7 +29,6 @@ func app() -> UIViewController {
         return resourceTableViewController(organizations(), standardCell { organization in
             organization.login
         }, navigationItem: navigationItem)
-
     }
     
 
@@ -53,7 +52,7 @@ func app() -> UIViewController {
     
     let flow = navigationController(loginViewController()) >>> orgsScreen >>> reposScreen >>> issuesScreen
 
-    return flow.run { _ in () }
+    return flow.run()
 }
 
 @UIApplicationMain

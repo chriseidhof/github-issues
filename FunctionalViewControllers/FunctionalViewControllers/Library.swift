@@ -24,7 +24,7 @@ public func map<A,B>(vc: Screen<A>, f: A -> B) -> Screen<B> {
 
 public func map<A,B>(nc: NavigationController<A>, f: A -> B) -> NavigationController<B> {
     return NavigationController { callback in
-        return nc.run { (y, nc) in
+        return nc.build { (y, nc) in
             callback(f(y), nc)
         }
     }
@@ -32,7 +32,7 @@ public func map<A,B>(nc: NavigationController<A>, f: A -> B) -> NavigationContro
 
 extension UIViewController {
     public func presentModal<A>(screen: NavigationController<A>, cancellable: Bool, callback: A -> ()) {
-        let vc = screen.run { [unowned self] x, nc in
+        let vc = screen.build { [unowned self] x, nc in
             callback(x)
             self.dismissViewControllerAnimated(true, completion: nil)
         }
@@ -49,15 +49,34 @@ extension UIViewController {
 }
 
 public struct Screen<A> {
-    public let run: (A -> ()) -> UIViewController
+    private let build: (A -> ()) -> UIViewController
+    public var navigationItem: NavigationItem
     
-    public init(_ run: (A -> ()) -> UIViewController) {
-        self.run = run
+    public init(_ build: (A -> ()) -> UIViewController) {
+        self.build = build
+        navigationItem = defaultNavigationItem
     }
+
+    public init(_ navigationItem: NavigationItem, _ build: (A -> ()) -> UIViewController) {
+        self.build = build
+        self.navigationItem = navigationItem
+    }
+
+    public func run(f: A -> ()) -> UIViewController {
+        let vc = build(f)
+        vc.applyNavigationItem(navigationItem)
+        return vc
+     }
 }
 
+func ignore<A>(_: A, _: UINavigationController) { }
+
 public struct NavigationController<A> {
-    public let run: ((A, UINavigationController) -> ()) -> UINavigationController
+    public let build: (f: (A, UINavigationController) -> ()) -> UINavigationController
+
+    public func run() -> UINavigationController {
+       return build { _ in }
+    }
 }
 
 public func navigationController<A>(vc: Screen<A>) -> NavigationController<A> {
@@ -72,8 +91,8 @@ public func navigationController<A>(vc: Screen<A>) -> NavigationController<A> {
 infix operator >>> { associativity left }
 
 public func >>><A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> NavigationController<B> {
-    return NavigationController(run: { (callback) -> UINavigationController in
-        let nc = l.run { a, nc in
+    return NavigationController { (callback) -> UINavigationController in
+        let nc = l.build { a, nc in
             let rvc = r(a).run { c in
                 callback(c, nc)
             }
@@ -81,7 +100,7 @@ public func >>><A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> Navigatio
 
         }
         return nc
-    })
+    }
 }
 
 public func textViewController(string: String) -> Screen<()> {

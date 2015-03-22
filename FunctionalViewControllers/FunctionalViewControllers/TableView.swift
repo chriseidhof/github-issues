@@ -49,7 +49,7 @@ public struct CellConfiguration<A> {
 
 
 public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: CellConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
-    return Screen { callback in
+    return Screen(navigationItem) { callback in
         var myTableViewController = MyViewController(style: UITableViewStyle.Plain)
         myTableViewController.items = nil
         loadData { myTableViewController.items = $0.map { Box($0) } }
@@ -60,7 +60,6 @@ public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: CellConf
             }
             return cell
         }
-        myTableViewController.applyNavigationItem(navigationItem)
         myTableViewController.callback = { x in
             if let boxed = x as? Box<A> {
                 callback(boxed.unbox)
