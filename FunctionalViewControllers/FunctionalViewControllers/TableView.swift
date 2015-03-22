@@ -48,15 +48,17 @@ public struct CellConfiguration<A> {
 }
 
 
-public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: CellConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
+public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: CellConfiguration<A>, reloadable: Bool = true, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
     return Screen(navigationItem) { callback in
         var myTableViewController = MyViewController(style: UITableViewStyle.Plain)
         myTableViewController.items = nil
         loadData { myTableViewController.items = $0.map { Box($0) } }
         myTableViewController.cellStyle = configuration.style
-        myTableViewController.reload = { (f: [AnyObject]? -> ()) in
-            loadData {
-                f($0.map { Box($0) })
+        if reloadable {
+            myTableViewController.reload = { (f: [AnyObject]? -> ()) in
+                loadData {
+                    f($0.map { Box($0) })
+                }
             }
         }
         myTableViewController.configureCell = { cell, obj in
