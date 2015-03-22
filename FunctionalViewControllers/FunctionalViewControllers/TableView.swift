@@ -54,6 +54,11 @@ public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: CellConf
         myTableViewController.items = nil
         loadData { myTableViewController.items = $0.map { Box($0) } }
         myTableViewController.cellStyle = configuration.style
+        myTableViewController.reload = { (f: [AnyObject]? -> ()) in
+            loadData {
+                f($0.map { Box($0) })
+            }
+        }
         myTableViewController.configureCell = { cell, obj in
             if let boxed = obj as? Box<A> {
                 configuration.render(cell, boxed.unbox)
@@ -81,6 +86,14 @@ class MyViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
+
+    var reload: (([AnyObject]? -> ()) -> ())? {
+        didSet {
+            self.refreshControl = reload == nil ? nil : UIRefreshControl()
+            self.refreshControl?.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
+        }
+    }
+
     var callback: AnyObject -> () = { _ in () }
     var configureCell: (UITableViewCell, AnyObject) -> UITableViewCell = { $0.0 }
     
@@ -97,5 +110,12 @@ class MyViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var obj: AnyObject = items![indexPath.row]
         callback(obj)
+    }
+
+    func refresh(sender: UIRefreshControl?) {
+        reload? { [weak self] items in
+            self?.items = items
+            sender?.endRefreshing()
+        }
     }
 }
