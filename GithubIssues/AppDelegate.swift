@@ -10,18 +10,11 @@ import UIKit
 import FunctionalViewControllers
 
 func app() -> UIViewController {
-
     let addButton : Repository -> BarButton = { repo in
-        BarButton(title: BarButtonTitle.SystemItem(UIBarButtonSystemItem.Add), callback: { context in
-            context.viewController.presentModal(navigationController(issueEditViewController()), cancellable: true) { issueInfo in
-                let resource = repo.createIssueResource(issueInfo.title, body: issueInfo.body)
-                request(resource, { issue in
-                    println("Created issue \(issue)")
-                })
-            }
-        })
+        add(issueEditViewController()) { issueInfo in
+            request(repo.createIssueResource(issueInfo.title, body: issueInfo.body))
+        }
     }
-
     
     let orgsScreen: LoginInfo -> Screen<Organization> = { loginInfo in
         var navigationItem = defaultNavigationItem
@@ -43,14 +36,12 @@ func app() -> UIViewController {
     let issuesScreen: Repository -> Screen<Issue> = { repo in
         var navigationItem = defaultNavigationItem
         navigationItem.title = repo.name
-        navigationItem.rightBarButtonItem = addButton(repo)
-
         return resourceTableViewController(repo.issuesResource, subtitleCell { issue in
             (issue.title, issue.state.rawValue)
         }, navigationItem: navigationItem)
     }
     
-    let flow = navigationController(loginViewController()) >>> orgsScreen >>> reposScreen >>> issuesScreen
+    let flow = navigationController(loginViewController()) >>> orgsScreen >>> reposScreen >>> (issuesScreen <|> addButton)
 
     return flow.run()
 }

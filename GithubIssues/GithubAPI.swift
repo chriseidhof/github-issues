@@ -170,13 +170,14 @@ func array<A>(element: AnyObject -> A?)(input: AnyObject) -> [A]? {
     return nil
 }
 
-let baseURL = NSURL(string: "https://api.github.com")!
+//let baseURL = NSURL(string: "https://api.github.com")!
+let baseURL = NSURL(string: "http://localhost:4567")!
 
 func addToken(r: NSMutableURLRequest) {
     r.setValue("token \(githubToken)", forHTTPHeaderField: "Authorization")
 }
 
-func request<A>(resource: Resource<A>, completion: A? -> ()) -> () {
+func request<A>(resource: Resource<A>, completion: A? -> () = { _ in }) -> () {
     apiRequest(addToken, baseURL, resource, { (reason, data) -> () in
         if let theData = data, str = NSString(data: theData, encoding: NSUTF8StringEncoding) {
             println(str)

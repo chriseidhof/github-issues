@@ -71,6 +71,7 @@ var AssociatedRightCompletionHandle: UInt8 = 0
 var AssociatedLeftCompletionHandle: UInt8 = 0
 
 extension UIViewController {
+    // todo this should be on the bar button...
     var rightBarButtonCompletion: CompletionHandler? {
         get {
             return objc_getAssociatedObject(self, &AssociatedRightCompletionHandle) as? CompletionHandler

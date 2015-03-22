@@ -123,3 +123,24 @@ class TextViewController: UIViewController {
         textView.frame = view.bounds
     }
 }
+
+public func modalButton<A>(title: BarButtonTitle, nc: NavigationController<A>, callback: A -> ()) -> BarButton {
+    return BarButton(title: title, callback: { context in
+        context.viewController.presentModal(nc, cancellable: true, callback: callback)
+    })
+}
+
+public func add<A>(screen: Screen<A>, callback: A -> ()) -> BarButton {
+    return modalButton(.SystemItem(.Add), navigationController(screen), callback)
+}
+
+// TODO: is this a good name?
+infix operator <|> { associativity left }
+
+public func <|><A,B>(screen: A -> Screen<B>, button: A -> BarButton) -> A -> Screen<B> {
+    return { a in
+        var screen = screen(a)
+        screen.navigationItem.rightBarButtonItem = button(a)
+        return screen
+    }
+}
