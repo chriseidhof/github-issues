@@ -119,16 +119,9 @@ public func jsonResource<A>(path: String, method: Method, requestParameters: JSO
     return jsonResource(path, method, requestParameters, statusCodeIs2xx, parse)
 }
 
-func flatten<A>(x: A??) -> A? {
-    if let y = x {
-        return y
-    }
-    return nil
-}
-
 public func jsonResource<A>(path: String, method: Method, requestParameters: JSONDictionary, validStatusCode: Int -> Bool, parse: AnyObject -> A?) -> Resource<A> {
 
-    let f  = { flatten(decodeJSON($0).map(parse)) }
+    let f  = { decodeJSON($0).flatMap(parse) }
     let jsonBody = requestParameters.count > 0 ? NSJSONSerialization.dataWithJSONObject(requestParameters, options: NSJSONWritingOptions.allZeros, error: nil) : nil
     let headers = ["Content-Type": "application/json",
                    "Accept": "application/json"
