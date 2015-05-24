@@ -37,6 +37,15 @@ public class COrganization: NSManagedObject {
     }
 }
 
+extension COrganization {
+    var repositoriesController: ResultsController<CRepository> {
+        let fetchRequest = NSFetchRequest(entityName: CRepository.entityName)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "organization = %@", self)
+        return ResultsController(context: self.managedObjectContext!, fetchRequest: fetchRequest)
+    }
+}
+
 public class CIssue: NSManagedObject {
     @NSManaged var state: String
     @NSManaged var title: String
@@ -81,15 +90,65 @@ func seed(context: NSManagedObjectContext) -> () {
 }
 
 func setupStack() -> NSManagedObjectContext {
-    let documentsDirectory = NSFileManager.defaultManager().URLForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomain: NSSearchPathDomainMask.UserDomainMask, appropriateForURL: nil, create: true, error: nil)!
-    let storeURL = documentsDirectory.URLByAppendingPathComponent("db.sqlite")
     let modelURL = NSBundle.mainBundle().URLForResource("GithubIssues", withExtension: "momd")!
     let model = NSManagedObjectModel(contentsOfURL: modelURL)!
     let context = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
     context.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
-    context.persistentStoreCoordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil, error: nil)
+    context.persistentStoreCoordinator?.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil, error: nil)
     return context
 }
+
+class ResultsController<A: CoreDataObject> : NSObject {
+    var changeCallback: ([A] -> ())? = nil
+
+    private var fetchedResultsController: NSFetchedResultsController
+    private var frcDelegate: FRCDelegate?
+
+    convenience init(context: NSManagedObjectContext) {
+        let fetchRequest = NSFetchRequest(entityName: A.entityName)
+        fetchRequest.sortDescriptors = A.sortDescriptors
+        self.init(context: context, fetchRequest: fetchRequest)
+    }
+
+    init(context: NSManagedObjectContext, fetchRequest: NSFetchRequest) {
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+    }
+
+    private var fetchedObjects: [A] {
+        if let objs = fetchedResultsController.fetchedObjects as? [A] {
+            return objs
+        }
+        return []
+    }
+
+    func load() -> [A] {
+        if fetchedResultsController.delegate == nil {
+            frcDelegate = FRCDelegate(callback: { [unowned self] in
+                self.changeCallback?(self.fetchedObjects)
+            })
+            fetchedResultsController.delegate = frcDelegate!
+            fetchedResultsController.performFetch(nil)
+        }
+        return fetchedObjects
+    }
+}
+
+private class FRCDelegate: NSObject, NSFetchedResultsControllerDelegate {
+    var callback: () -> ()
+
+    init(callback: () -> ()) {
+        self.callback = callback
+    }
+
+    @objc func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    }
+
+    @objc func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        callback()
+    }
+
+}
+
 
 protocol CoreDataObject: AnyObject {
     static var entityName: String { get }

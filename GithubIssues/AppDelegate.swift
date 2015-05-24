@@ -10,17 +10,19 @@ import UIKit
 import FunctionalViewControllers
 import CoreData
 
-func coreDataTableViewController<A: CoreDataObject>(context: NSManagedObjectContext, configuration: CellConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
+func coreDataTableViewController<A>(controller: ResultsController<A>, configuration: CellConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
     return asyncTableVC({ callback in
-        callback(results(context))
-    }, configuration, navigationItem: navigationItem)
+        callback(controller.load())
+        }, configuration, registerUpdateCallback: { callback in
+            controller.changeCallback = callback
+        },navigationItem: navigationItem)
 }
 
 func coreDataApp(context: NSManagedObjectContext) -> UIViewController {
     let orgsScreen: LoginInfo -> Screen<COrganization> = { loginInfo in
         var navigationItem = defaultNavigationItem
         navigationItem.title = "Organizations"
-        return coreDataTableViewController(context, standardCell { organization in
+        return coreDataTableViewController(ResultsController(context: context), standardCell { organization in
             organization.login
             }, navigationItem: navigationItem)
     }
@@ -28,13 +30,20 @@ func coreDataApp(context: NSManagedObjectContext) -> UIViewController {
     let reposScreen: COrganization -> Screen<CRepository> = { org in
         var navigationItem = defaultNavigationItem
         navigationItem.title = org.login
-        return asyncTableVC({ callback in
-            callback(org.repositories)
-            }, standardCell { (repo: CRepository) in repo.name }, navigationItem: navigationItem)
+        return coreDataTableViewController(org.repositoriesController, standardCell { (repo: CRepository) in repo.name }, navigationItem: navigationItem)
     }
     
+    let addButton : COrganization -> BarButton = { org in
+        BarButton(title: BarButtonTitle.Text("New Repo"), callback: { _ in
+            let newRepo: CRepository = insert(context)
+            newRepo.name = "My New Repository"
+            newRepo.organization = org
+        })
+    }
+
+
     
-    let flow = navigationController(loginViewController()) >>> orgsScreen >>> reposScreen
+    let flow = navigationController(loginViewController()) >>> orgsScreen >>> (reposScreen <|> addButton)
     
     return flow.run()
 }
@@ -88,7 +97,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let users: [CUser] = results(context)
         seed(context)
-        println(users)
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = coreDataApp(context) // app()
