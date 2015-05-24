@@ -8,4 +8,4 @@
 
 import Foundation
 
-let githubToken = YOUR_TOKEN_HERE // see https://github.com/settings/tokens/new
+let githubToken = "" // see https://github.com/settings/tokens/new

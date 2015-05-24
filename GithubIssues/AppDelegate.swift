@@ -8,6 +8,36 @@
 
 import UIKit
 import FunctionalViewControllers
+import CoreData
+
+func coreDataTableViewController<A: CoreDataObject>(context: NSManagedObjectContext, configuration: CellConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
+    return asyncTableVC({ callback in
+        callback(results(context))
+    }, configuration, navigationItem: navigationItem)
+}
+
+func coreDataApp(context: NSManagedObjectContext) -> UIViewController {
+    let orgsScreen: LoginInfo -> Screen<COrganization> = { loginInfo in
+        var navigationItem = defaultNavigationItem
+        navigationItem.title = "Organizations"
+        return coreDataTableViewController(context, standardCell { organization in
+            organization.login
+            }, navigationItem: navigationItem)
+    }
+    
+    let reposScreen: COrganization -> Screen<CRepository> = { org in
+        var navigationItem = defaultNavigationItem
+        navigationItem.title = org.login
+        return asyncTableVC({ callback in
+            callback(org.repositories)
+            }, standardCell { (repo: CRepository) in repo.name }, navigationItem: navigationItem)
+    }
+    
+    
+    let flow = navigationController(loginViewController()) >>> orgsScreen >>> reposScreen
+    
+    return flow.run()
+}
 
 func app() -> UIViewController {
     let addButton : Repository -> BarButton = { repo in
@@ -53,8 +83,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        let context = setupStack()
+        let z: CUser = insert(context)
+
+        let users: [CUser] = results(context)
+        seed(context)
+        println(users)
+        
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        window?.rootViewController = app()
+        window?.rootViewController = coreDataApp(context) // app()
         window?.makeKeyAndVisible()
         return true
     }

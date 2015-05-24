@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D131" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Issue" representedClassName="GithubIssues.CIssue" syncable="YES">
+        <attribute name="state_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="repository" maxCount="1" deletionRule="Nullify" destinationEntity="Repository" inverseName="issues" inverseEntity="Repository" syncable="YES"/>
+    </entity>
+    <entity name="Organization" representedClassName="GithubIssues.COrganization" syncable="YES">
+        <attribute name="login" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="repositories_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Repository" inverseName="organization" inverseEntity="Repository" syncable="YES"/>
+    </entity>
+    <entity name="Repository" representedClassName="GithubIssues.CRepository" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="issues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="repository" inverseEntity="Issue" syncable="YES"/>
+        <relationship name="organization" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Organization" inverseName="repositories_" inverseEntity="Organization" syncable="YES"/>
+    </entity>
+    <entity name="User" representedClassName="GithubIssues.CUser" syncable="YES"/>
+    <elements>
+        <element name="Organization" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="Repository" positionX="-54" positionY="0" width="128" height="90"/>
+        <element name="User" positionX="-36" positionY="36" width="128" height="45"/>
+        <element name="Issue" positionX="-27" positionY="45" width="128" height="90"/>
+    </elements>
+</model>

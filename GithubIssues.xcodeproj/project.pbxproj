@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		831B98641B12285500DAB002 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831B98631B12285500DAB002 /* CoreDataStack.swift */; };
+		831B98671B12286E00DAB002 /* GithubIssues.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 831B98651B12286E00DAB002 /* GithubIssues.xcdatamodeld */; };
 		835D39721AA1AA92003FFAF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39711AA1AA92003FFAF0 /* AppDelegate.swift */; };
 		835D39791AA1AA92003FFAF0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 835D39781AA1AA92003FFAF0 /* Images.xcassets */; };
 		835D39881AA1AA92003FFAF0 /* GithubIssuesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39871AA1AA92003FFAF0 /* GithubIssuesTests.swift */; };
@@ -30,6 +32,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		831B98631B12285500DAB002 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		831B98661B12286E00DAB002 /* GithubIssues.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GithubIssues.xcdatamodel; sourceTree = "<group>"; };
+		831B98681B12361800DAB002 /* GithubIssues 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GithubIssues 2.xcdatamodel"; sourceTree = "<group>"; };
 		835D396C1AA1AA92003FFAF0 /* GithubIssues.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubIssues.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		835D39701AA1AA92003FFAF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		835D39711AA1AA92003FFAF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +73,8 @@
 		835D39631AA1AA92003FFAF0 = {
 			isa = PBXGroup;
 			children = (
+				831B98651B12286E00DAB002 /* GithubIssues.xcdatamodeld */,
+				831B98631B12285500DAB002 /* CoreDataStack.swift */,
 				836927671AB5D54C0046DE26 /* FunctionalViewControllers.framework */,
 				835D396E1AA1AA92003FFAF0 /* GithubIssues */,
 				835D39841AA1AA92003FFAF0 /* GithubIssuesTests */,
@@ -232,6 +239,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				831B98671B12286E00DAB002 /* GithubIssues.xcdatamodeld in Sources */,
+				831B98641B12285500DAB002 /* CoreDataStack.swift in Sources */,
 				835D39A21AA1B2DA003FFAF0 /* Credentials.swift in Sources */,
 				835D39941AA1AB6E003FFAF0 /* LoginViewController.swift in Sources */,
 				835D39721AA1AA92003FFAF0 /* AppDelegate.swift in Sources */,
@@ -434,6 +443,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		831B98651B12286E00DAB002 /* GithubIssues.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				831B98681B12361800DAB002 /* GithubIssues 2.xcdatamodel */,
+				831B98661B12286E00DAB002 /* GithubIssues.xcdatamodel */,
+			);
+			currentVersion = 831B98661B12286E00DAB002 /* GithubIssues.xcdatamodel */;
+			path = GithubIssues.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 835D39641AA1AA92003FFAF0 /* Project object */;
 }
