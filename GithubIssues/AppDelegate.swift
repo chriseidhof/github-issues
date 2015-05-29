@@ -40,8 +40,11 @@ func app() -> UIViewController {
             (issue.title, issue.state.rawValue)
         }, navigationItem: navigationItem)
     }
-    
-    let flow = navigationController(loginViewController()) >>> orgsScreen >>> reposScreen >>> (issuesScreen <|> addButton)
+
+    let flow = ┰navigationController(loginViewController())
+               ┠ orgsScreen
+               ┠ reposScreen
+               ┖ (issuesScreen <|> addButton)
 
     return flow.run()
 }

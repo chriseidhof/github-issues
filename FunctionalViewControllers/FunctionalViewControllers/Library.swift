@@ -103,6 +103,15 @@ public func >>><A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> Navigatio
     }
 }
 
+prefix operator ┰ { }
+public prefix func ┰<A>(l: A) -> A { return l }
+
+infix operator ┠ { associativity left }
+public func ┠<A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> NavigationController<B> { return l >>> r }
+
+infix operator ┖ { associativity left }
+public func ┖<A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> NavigationController<B> { return l >>> r }
+
 public func textViewController(string: String) -> Screen<()> {
     return Screen { _ in
         var tv = TextViewController()
