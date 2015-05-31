@@ -14,7 +14,6 @@
 		835D39961AA1ABFD003FFAF0 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 835D39951AA1ABFD003FFAF0 /* Storyboard.storyboard */; };
 		835D39A21AA1B2DA003FFAF0 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39A11AA1B2DA003FFAF0 /* Credentials.swift */; };
 		835D39A61AA1B458003FFAF0 /* GithubAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835D39A51AA1B458003FFAF0 /* GithubAPI.swift */; };
-		836927681AB5D54C0046DE26 /* FunctionalViewControllers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836927671AB5D54C0046DE26 /* FunctionalViewControllers.framework */; };
 		837D190A1AAB8D5A008F71C6 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837D19091AAB8D5A008F71C6 /* Resources.swift */; };
 		837D190E1AAC56AE008F71C6 /* IssueEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837D190D1AAC56AE008F71C6 /* IssueEditViewController.swift */; };
 /* End PBXBuildFile section */
@@ -41,7 +40,6 @@
 		835D39951AA1ABFD003FFAF0 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		835D39A11AA1B2DA003FFAF0 /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		835D39A51AA1B458003FFAF0 /* GithubAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubAPI.swift; sourceTree = "<group>"; };
-		836927671AB5D54C0046DE26 /* FunctionalViewControllers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FunctionalViewControllers.framework; path = "FunctionalViewControllers/build/Debug-iphoneos/FunctionalViewControllers.framework"; sourceTree = "<group>"; };
 		837D19091AAB8D5A008F71C6 /* Resources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		837D190D1AAC56AE008F71C6 /* IssueEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueEditViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,7 +49,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				836927681AB5D54C0046DE26 /* FunctionalViewControllers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,7 +65,6 @@
 		835D39631AA1AA92003FFAF0 = {
 			isa = PBXGroup;
 			children = (
-				836927671AB5D54C0046DE26 /* FunctionalViewControllers.framework */,
 				835D396E1AA1AA92003FFAF0 /* GithubIssues */,
 				835D39841AA1AA92003FFAF0 /* GithubIssuesTests */,
 				835D396D1AA1AA92003FFAF0 /* Products */,

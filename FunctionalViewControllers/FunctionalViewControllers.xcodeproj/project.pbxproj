@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8369273C1AB5D5210046DE26 /* FunctionalViewControllers.h in Headers */ = {isa = PBXBuildFile; fileRef = 8369273B1AB5D5210046DE26 /* FunctionalViewControllers.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A00BDA31B1B29BA00F558BB /* FunctionalViewControllers.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A00BDA21B1B29BA00F558BB /* FunctionalViewControllers.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A6AC91C1B1B273000119EBB /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6AC9121B1B273000119EBB /* TableView.swift */; };
+		1A6AC91D1B1B273000119EBB /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6AC9131B1B273000119EBB /* UIViewController+Extensions.swift */; };
+		1A6AC9201B1B273000119EBB /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6AC9181B1B273000119EBB /* APIClient.swift */; };
+		1A6AC9211B1B273000119EBB /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6AC9191B1B273000119EBB /* Library.swift */; };
+		1A6AC9221B1B273000119EBB /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6AC91A1B1B273000119EBB /* Network.swift */; };
+		1A6AC9281B1B273F00119EBB /* FunctionalViewControllersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6AC9251B1B273F00119EBB /* FunctionalViewControllersTests.swift */; };
 		836927421AB5D5210046DE26 /* FunctionalViewControllers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836927361AB5D5210046DE26 /* FunctionalViewControllers.framework */; };
-		836927491AB5D5210046DE26 /* FunctionalViewControllersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836927481AB5D5210046DE26 /* FunctionalViewControllersTests.swift */; };
-		836927611AB5D53F0046DE26 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8369275B1AB5D53F0046DE26 /* Library.swift */; };
-		836927621AB5D53F0046DE26 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8369275C1AB5D53F0046DE26 /* APIClient.swift */; };
-		836927631AB5D53F0046DE26 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8369275D1AB5D53F0046DE26 /* Network.swift */; };
-		836927641AB5D53F0046DE26 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8369275E1AB5D53F0046DE26 /* TableView.swift */; };
-		836927661AB5D53F0046DE26 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836927601AB5D53F0046DE26 /* UIViewController+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,17 +28,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A00BDA21B1B29BA00F558BB /* FunctionalViewControllers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FunctionalViewControllers.h; sourceTree = "<group>"; };
+		1A6AC9121B1B273000119EBB /* TableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		1A6AC9131B1B273000119EBB /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		1A6AC9161B1B273000119EBB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A6AC9181B1B273000119EBB /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		1A6AC9191B1B273000119EBB /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
+		1A6AC91A1B1B273000119EBB /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		1A6AC9251B1B273F00119EBB /* FunctionalViewControllersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionalViewControllersTests.swift; sourceTree = "<group>"; };
+		1A6AC9271B1B273F00119EBB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		836927361AB5D5210046DE26 /* FunctionalViewControllers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FunctionalViewControllers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8369273A1AB5D5210046DE26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8369273B1AB5D5210046DE26 /* FunctionalViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FunctionalViewControllers.h; sourceTree = "<group>"; };
 		836927411AB5D5210046DE26 /* FunctionalViewControllersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FunctionalViewControllersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		836927471AB5D5210046DE26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		836927481AB5D5210046DE26 /* FunctionalViewControllersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionalViewControllersTests.swift; sourceTree = "<group>"; };
-		8369275B1AB5D53F0046DE26 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
-		8369275C1AB5D53F0046DE26 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
-		8369275D1AB5D53F0046DE26 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
-		8369275E1AB5D53F0046DE26 /* TableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
-		836927601AB5D53F0046DE26 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,11 +60,74 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A6AC90F1B1B273000119EBB /* FunctionalViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				1A6AC9101B1B273000119EBB /* Controller */,
+				1A6AC9141B1B273000119EBB /* Supporting-Files */,
+				1A6AC9171B1B273000119EBB /* Utility */,
+			);
+			path = FunctionalViewControllers;
+			sourceTree = "<group>";
+		};
+		1A6AC9101B1B273000119EBB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1A6AC9121B1B273000119EBB /* TableView.swift */,
+				1A6AC9131B1B273000119EBB /* UIViewController+Extensions.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1A6AC9141B1B273000119EBB /* Supporting-Files */ = {
+			isa = PBXGroup;
+			children = (
+				1A00BDA21B1B29BA00F558BB /* FunctionalViewControllers.h */,
+				1A6AC9161B1B273000119EBB /* Info.plist */,
+			);
+			path = "Supporting-Files";
+			sourceTree = "<group>";
+		};
+		1A6AC9171B1B273000119EBB /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				1A6AC9181B1B273000119EBB /* APIClient.swift */,
+				1A6AC9191B1B273000119EBB /* Library.swift */,
+				1A6AC91A1B1B273000119EBB /* Network.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		1A6AC9231B1B273F00119EBB /* FunctionalViewControllersTests */ = {
+			isa = PBXGroup;
+			children = (
+				1A6AC9241B1B273F00119EBB /* Source */,
+				1A6AC9261B1B273F00119EBB /* Supporting-Files */,
+			);
+			path = FunctionalViewControllersTests;
+			sourceTree = "<group>";
+		};
+		1A6AC9241B1B273F00119EBB /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				1A6AC9251B1B273F00119EBB /* FunctionalViewControllersTests.swift */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		1A6AC9261B1B273F00119EBB /* Supporting-Files */ = {
+			isa = PBXGroup;
+			children = (
+				1A6AC9271B1B273F00119EBB /* Info.plist */,
+			);
+			path = "Supporting-Files";
+			sourceTree = "<group>";
+		};
 		8369272C1AB5D5210046DE26 = {
 			isa = PBXGroup;
 			children = (
-				836927381AB5D5210046DE26 /* FunctionalViewControllers */,
-				836927451AB5D5210046DE26 /* FunctionalViewControllersTests */,
+				1A6AC90F1B1B273000119EBB /* FunctionalViewControllers */,
+				1A6AC9231B1B273F00119EBB /* FunctionalViewControllersTests */,
 				836927371AB5D5210046DE26 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -78,45 +141,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		836927381AB5D5210046DE26 /* FunctionalViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				8369275B1AB5D53F0046DE26 /* Library.swift */,
-				8369275C1AB5D53F0046DE26 /* APIClient.swift */,
-				8369275D1AB5D53F0046DE26 /* Network.swift */,
-				8369275E1AB5D53F0046DE26 /* TableView.swift */,
-				836927601AB5D53F0046DE26 /* UIViewController+Extensions.swift */,
-				8369273B1AB5D5210046DE26 /* FunctionalViewControllers.h */,
-				836927391AB5D5210046DE26 /* Supporting Files */,
-			);
-			path = FunctionalViewControllers;
-			sourceTree = "<group>";
-		};
-		836927391AB5D5210046DE26 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				8369273A1AB5D5210046DE26 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		836927451AB5D5210046DE26 /* FunctionalViewControllersTests */ = {
-			isa = PBXGroup;
-			children = (
-				836927481AB5D5210046DE26 /* FunctionalViewControllersTests.swift */,
-				836927461AB5D5210046DE26 /* Supporting Files */,
-			);
-			path = FunctionalViewControllersTests;
-			sourceTree = "<group>";
-		};
-		836927461AB5D5210046DE26 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				836927471AB5D5210046DE26 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -124,7 +148,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8369273C1AB5D5210046DE26 /* FunctionalViewControllers.h in Headers */,
+				1A00BDA31B1B29BA00F558BB /* FunctionalViewControllers.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,11 +248,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				836927611AB5D53F0046DE26 /* Library.swift in Sources */,
-				836927641AB5D53F0046DE26 /* TableView.swift in Sources */,
-				836927621AB5D53F0046DE26 /* APIClient.swift in Sources */,
-				836927661AB5D53F0046DE26 /* UIViewController+Extensions.swift in Sources */,
-				836927631AB5D53F0046DE26 /* Network.swift in Sources */,
+				1A6AC91D1B1B273000119EBB /* UIViewController+Extensions.swift in Sources */,
+				1A6AC9221B1B273000119EBB /* Network.swift in Sources */,
+				1A6AC9211B1B273000119EBB /* Library.swift in Sources */,
+				1A6AC91C1B1B273000119EBB /* TableView.swift in Sources */,
+				1A6AC9201B1B273000119EBB /* APIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,7 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				836927491AB5D5210046DE26 /* FunctionalViewControllersTests.swift in Sources */,
+				1A6AC9281B1B273F00119EBB /* FunctionalViewControllersTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +371,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = FunctionalViewControllers/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/FunctionalViewControllers/Supporting-Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -362,7 +386,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = FunctionalViewControllers/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/FunctionalViewControllers/Supporting-Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -381,7 +405,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = FunctionalViewControllersTests/Info.plist;
+				INFOPLIST_FILE = "FunctionalViewControllersTests/Supporting-Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -394,7 +418,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = FunctionalViewControllersTests/Info.plist;
+				INFOPLIST_FILE = "FunctionalViewControllersTests/Supporting-Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -419,6 +443,7 @@
 				8369274E1AB5D5210046DE26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8369274F1AB5D5210046DE26 /* Build configuration list for PBXNativeTarget "FunctionalViewControllersTests" */ = {
 			isa = XCConfigurationList;
@@ -427,6 +452,7 @@
 				836927511AB5D5210046DE26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
