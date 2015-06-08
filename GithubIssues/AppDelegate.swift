@@ -29,12 +29,11 @@ func coreDataApp(context: NSManagedObjectContext) -> UIViewController {
     let issuesScreen: CRepository -> Screen<CIssue> = {
         coreDataTableViewController($0.issuesController, standardCell { $0.title })
     }
-    
 
     let addIssue: CRepository -> BarButton = { repo in
-        BarButton(title: BarButtonTitle.SystemItem(UIBarButtonSystemItem.Add)) { _ in
+        add(issueEditViewController()) { issueInfo in
             let newIssue: CIssue = insert(context)
-            newIssue.title = "New issue"
+            newIssue.title = issueInfo.title
             newIssue.repository = repo
         }
     }
@@ -42,8 +41,6 @@ func coreDataApp(context: NSManagedObjectContext) -> UIViewController {
     let flow = navigationController(orgsScreen) >>> reposScreen >>> (issuesScreen <|> addIssue)
     
     return flow.run()
-
-
 }
 
 func app() -> UIViewController {
@@ -90,10 +87,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        let context = setupStack()
-        let z: CUser = insert(context)
 
-        let users: [CUser] = results(context)
+        let context = setupStack()
         seed(context)
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
