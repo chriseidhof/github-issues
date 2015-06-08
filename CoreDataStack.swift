@@ -46,12 +46,22 @@ extension COrganization {
     }
 }
 
+extension CRepository {
+    var issuesController: ResultsController<CIssue> {
+        let fetchRequest = NSFetchRequest(entityName: CIssue.entityName)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "repository = %@", self)
+        return ResultsController(context: self.managedObjectContext!, fetchRequest: fetchRequest)
+    }
+}
+
 public class CIssue: NSManagedObject {
     @NSManaged var state: String
     @NSManaged var title: String
     @NSManaged var body: String?
     @NSManaged var assignee: CUser?
     @NSManaged var creator: CUser
+    @NSManaged var repository: CRepository
 //    @NSManaged var milestone: CMilestone?
 }
 

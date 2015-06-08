@@ -12,40 +12,38 @@ import CoreData
 
 func coreDataTableViewController<A>(controller: ResultsController<A>, configuration: CellConfiguration<A>, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
     return asyncTableVC({ callback in
-        callback(controller.load())
-        }, configuration, registerUpdateCallback: { callback in
-            controller.changeCallback = callback
+            callback(controller.load())
+        }, configuration, registerUpdateCallback: {
+            controller.changeCallback = $0
         },navigationItem: navigationItem)
 }
 
 func coreDataApp(context: NSManagedObjectContext) -> UIViewController {
-    let orgsScreen: LoginInfo -> Screen<COrganization> = { loginInfo in
-        var navigationItem = defaultNavigationItem
-        navigationItem.title = "Organizations"
-        return coreDataTableViewController(ResultsController(context: context), standardCell { organization in
-            organization.login
-            }, navigationItem: navigationItem)
-    }
-    
-    let reposScreen: COrganization -> Screen<CRepository> = { org in
-        var navigationItem = defaultNavigationItem
-        navigationItem.title = org.login
-        return coreDataTableViewController(org.repositoriesController, standardCell { (repo: CRepository) in repo.name }, navigationItem: navigationItem)
-    }
-    
-    let addButton : COrganization -> BarButton = { org in
-        BarButton(title: BarButtonTitle.Text("New Repo"), callback: { _ in
-            let newRepo: CRepository = insert(context)
-            newRepo.name = "My New Repository"
-            newRepo.organization = org
-        })
-    }
 
+    let orgsScreen: Screen<COrganization> = coreDataTableViewController(ResultsController(context: context), standardCell { $0.login } , navigationItem: defaultNavigationItem)
 
+    let reposScreen: COrganization -> Screen<CRepository> = { (org: COrganization) in
+        coreDataTableViewController(org.repositoriesController, standardCell { $0.name })
+    }
     
-    let flow = navigationController(loginViewController()) >>> orgsScreen >>> (reposScreen <|> addButton)
+    let issuesScreen: CRepository -> Screen<CIssue> = {
+        coreDataTableViewController($0.issuesController, standardCell { $0.title })
+    }
+    
+
+    let addIssue: CRepository -> BarButton = { repo in
+        BarButton(title: BarButtonTitle.SystemItem(UIBarButtonSystemItem.Add)) { _ in
+            let newIssue: CIssue = insert(context)
+            newIssue.title = "New issue"
+            newIssue.repository = repo
+        }
+    }
+    
+    let flow = navigationController(orgsScreen) >>> reposScreen >>> (issuesScreen <|> addIssue)
     
     return flow.run()
+
+
 }
 
 func app() -> UIViewController {
