@@ -34,7 +34,7 @@ class IssueEditViewController: UIViewController {
     }
 
     func done(sender: UIBarButtonItem) {
-        let info = IssueInfo(title: self.titleField.text, body: self.bodyField.text)
+        let info = IssueInfo(title: self.titleField.text!, body: self.bodyField.text)
         completion?(info)
     }
 }

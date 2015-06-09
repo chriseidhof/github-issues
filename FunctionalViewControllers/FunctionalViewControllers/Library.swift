@@ -41,7 +41,7 @@ extension UIViewController {
             let cancelButton = BarButton(title: BarButtonTitle.SystemItem(UIBarButtonSystemItem.Cancel), callback: { _ in
                 self.dismissViewControllerAnimated(true, completion: nil)
             })
-            let rootVC = vc.viewControllers[0] as! UIViewController
+            let rootVC = vc.viewControllers[0] as UIViewController
             rootVC.setLeftBarButton(cancelButton)
         }
         presentViewController(vc, animated: true, completion: nil)
@@ -105,7 +105,7 @@ public func >>><A,B>(l: NavigationController<A>, r: A -> Screen<B>) -> Navigatio
 
 public func textViewController(string: String) -> Screen<()> {
     return Screen { _ in
-        var tv = TextViewController()
+        let tv = TextViewController()
         tv.textView.text = string
         return tv
     }
@@ -131,7 +131,7 @@ public func modalButton<A>(title: BarButtonTitle, nc: NavigationController<A>, c
 }
 
 public func add<A>(screen: Screen<A>, callback: A -> ()) -> BarButton {
-    return modalButton(.SystemItem(.Add), navigationController(screen), callback)
+    return modalButton(.SystemItem(.Add), nc: navigationController(screen), callback: callback)
 }
 
 // TODO: is this a good name?

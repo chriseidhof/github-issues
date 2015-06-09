@@ -173,6 +173,7 @@
 		8369272D1AB5D5210046DE26 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Unsigned Integer";
 				TargetAttributes = {
@@ -419,6 +420,7 @@
 				8369274E1AB5D5210046DE26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8369274F1AB5D5210046DE26 /* Build configuration list for PBXNativeTarget "FunctionalViewControllersTests" */ = {
 			isa = XCConfigurationList;
@@ -427,6 +429,7 @@
 				836927511AB5D5210046DE26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

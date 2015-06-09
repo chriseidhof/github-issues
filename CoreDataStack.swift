@@ -104,7 +104,7 @@ func setupStack() -> NSManagedObjectContext {
     let model = NSManagedObjectModel(contentsOfURL: modelURL)!
     let context = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
     context.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
-    context.persistentStoreCoordinator?.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil, error: nil)
+    try! context.persistentStoreCoordinator?.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil)
     return context
 }
 
@@ -125,10 +125,8 @@ class ResultsController<A: CoreDataObject> : NSObject {
     }
 
     private var fetchedObjects: [A] {
-        if let objs = fetchedResultsController.fetchedObjects as? [A] {
-            return objs
-        }
-        return []
+        let objs = fetchedResultsController.fetchedObjects ?? []
+        return objs.map { $0 as! A }
     }
 
     func load() -> [A] {
@@ -137,7 +135,10 @@ class ResultsController<A: CoreDataObject> : NSObject {
                 self.changeCallback?(self.fetchedObjects)
             })
             fetchedResultsController.delegate = frcDelegate!
-            fetchedResultsController.performFetch(nil)
+            do {
+                try fetchedResultsController.performFetch()
+            } catch _ {
+            }
         }
         return fetchedObjects
     }
@@ -172,7 +173,12 @@ func insert<A : CoreDataObject>(context: NSManagedObjectContext) -> A {
 
 func results<A: CoreDataObject>(context: NSManagedObjectContext) -> [A] {
     let fetchRequest = NSFetchRequest(entityName: A.entityName)
-    let results = context.executeFetchRequest(fetchRequest, error: nil)
+    let results: [AnyObject]?
+    do {
+        results = try context.executeFetchRequest(fetchRequest)
+    } catch _ {
+        results = nil
+    }
     fetchRequest.sortDescriptors = A.sortDescriptors
     return results as! [A]
 }

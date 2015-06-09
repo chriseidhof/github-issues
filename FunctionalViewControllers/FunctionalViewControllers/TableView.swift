@@ -48,9 +48,9 @@ public struct CellConfiguration<A> {
 }
 
 
-public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), configuration: CellConfiguration<A>, registerUpdateCallback: (([A] -> ()) -> ())? = nil, reloadable: Bool = true, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
+public func asyncTableVC<A>(loadData: ([A] -> ()) -> (), _ configuration: CellConfiguration<A>, _ registerUpdateCallback: (([A] -> ()) -> ())? = nil, reloadable: Bool = true, navigationItem: NavigationItem = defaultNavigationItem) -> Screen<A> {
     return Screen(navigationItem) { callback in
-        var myTableViewController = MyViewController(style: UITableViewStyle.Plain)
+        let myTableViewController = MyViewController(style: UITableViewStyle.Plain)
         myTableViewController.items = nil
         if let updateCallback = registerUpdateCallback {
             updateCallback { items in
@@ -106,7 +106,7 @@ class MyViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell : UITableViewCell = UITableViewCell(style: cellStyle, reuseIdentifier: nil) // todo dequeue
-        var obj: AnyObject = items![indexPath.row]
+        let obj: AnyObject = items![indexPath.row]
         return configureCell(cell, obj)
     }
     
@@ -115,7 +115,7 @@ class MyViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var obj: AnyObject = items![indexPath.row]
+        let obj: AnyObject = items![indexPath.row]
         callback(obj)
     }
 

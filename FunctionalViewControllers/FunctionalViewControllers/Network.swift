@@ -66,13 +66,13 @@ public class NetworkSession: NSObject, NSURLSessionDataDelegate {
     public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
         // TODO: if countOfBytesExpectedToReceive is less than zero, make sure we call progress with nil (e.g. unknown)
         let progress = Double(dataTask.countOfBytesReceived) / Double(dataTask.countOfBytesExpectedToReceive)
-        let task = networkTaskForRequest(dataTask.originalRequest)
+        let task = networkTaskForRequest(dataTask.originalRequest!)
         task?.callProgressHandlers(progress)
         task?.data.appendData(data)
     }
     
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-        if let t = networkTaskForRequest(task.originalRequest) {
+        if let t = networkTaskForRequest(task.originalRequest!) {
             removeNetworkTask(t)
             var statusCode = 0
             if let response = task.response as? NSHTTPURLResponse {
@@ -115,7 +115,7 @@ struct NetworkTask : Equatable {
         self.request = request
         addHandlers(failure: failure, progress: progress, completion: completion)
         let task = session.dataTaskWithRequest(request)
-        task.resume()
+        task!.resume()
         self.validStatusCode = validStatusCode
     }
     
@@ -135,7 +135,7 @@ struct NetworkTask : Equatable {
         mainThread { for f in self.failureHandlers { f(statusCode: statusCode, error: error, data: self.data) } }
     }
     
-    mutating func addHandlers(#failure: NetworkTaskFailureHandler, progress: NetworkTaskProgressHandler, completion: NetworkTaskCompletionHandler) {
+    mutating func addHandlers(failure failure: NetworkTaskFailureHandler, progress: NetworkTaskProgressHandler, completion: NetworkTaskCompletionHandler) {
         failureHandlers += [failure]
         progressHandlers += [progress]
         completionHandlers += [completion]

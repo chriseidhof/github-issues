@@ -178,13 +178,13 @@ func addToken(r: NSMutableURLRequest) {
 }
 
 func request<A>(resource: Resource<A>, completion: A? -> () = { _ in }) -> () {
-    apiRequest(addToken, baseURL, resource, { (reason, data) -> () in
+    apiRequest(addToken, baseURL: baseURL, resource: resource, failure: { (reason, data) -> () in
         if let theData = data, str = NSString(data: theData, encoding: NSUTF8StringEncoding) {
-            println(str)
+            print(str)
         }
-        println("Reason: \(reason)")
+        print("Reason: \(reason)")
         completion(nil)
-        }, { progress in
+        }, progress: { progress in
             ()
-        }, { success in completion(success)})
+        }, completion: { success in completion(success)})
 }

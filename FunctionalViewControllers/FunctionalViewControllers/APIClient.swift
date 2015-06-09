@@ -24,7 +24,7 @@ public typealias JSONDictionary = [String:AnyObject]
 
 public let statusCodeIs2xx = { $0 >= 200 && $0 < 300}
 
-public struct Resource<A> : Printable {
+public struct Resource<A> : CustomStringConvertible {
     let path: String
     let method : Method
     let requestBody: NSData?
@@ -56,24 +56,13 @@ public struct Resource<A> : Printable {
 
 }
 
-public enum Reason : Printable {
+public enum Reason {
     case CouldNotParseJSON
     case NoData
     case NoSuccessStatusCode(statusCode: Int)
     case DidNotValidate(errors: [String])
     case Other(NSError)
     case Unauthorized
-    
-    public var description : String {
-        switch self {
-        case .CouldNotParseJSON: return "Could not parse JSON"
-        case .NoData: return "No Data"
-        case let .NoSuccessStatusCode(statusCode): return "No success status code"
-        case .DidNotValidate(let errors): return "Did not validate (errors)"
-        case .Other(let err): return "Other error \(err.localizedDescription) \(err.code)"
-        case .Unauthorized: return "Unauthorized"
-        }
-    }
 }
 
 let apiClientNetworkSession = NetworkSession()
@@ -107,29 +96,43 @@ public func apiRequest<A>(modifyRequest: NSMutableURLRequest -> (), baseURL: NSU
 }
 
 func decodeJSON(data: NSData) -> AnyObject? {
-    return NSJSONSerialization.JSONObjectWithData(data, options:
-        NSJSONReadingOptions.allZeros, error: nil)
+    do {
+        return try NSJSONSerialization.JSONObjectWithData(data, options:
+            NSJSONReadingOptions())
+    } catch _ {
+        return nil
+    }
 }
 
 func encodeJSON(input: JSONDictionary) -> NSData? {
-    return NSJSONSerialization.dataWithJSONObject(input, options: NSJSONWritingOptions.allZeros, error: nil)
+    do {
+        return try NSJSONSerialization.dataWithJSONObject(input, options: NSJSONWritingOptions())
+    } catch _ {
+        return nil
+    }
 }
 
-public func jsonResource<A>(path: String, method: Method, requestParameters: JSONDictionary, parse: AnyObject -> A?) -> Resource<A> {
+public func jsonResource<A>(path: String, _ method: Method, _ requestParameters: JSONDictionary, _ parse: AnyObject -> A?) -> Resource<A> {
     return jsonResource(path, method, requestParameters, statusCodeIs2xx, parse)
 }
 
 func flatten<A>(x: A??) -> A? {
-    if let y = x {
-        return y
-    }
-    return nil
+    return x?.flatMap { $0 }
 }
 
-public func jsonResource<A>(path: String, method: Method, requestParameters: JSONDictionary, validStatusCode: Int -> Bool, parse: AnyObject -> A?) -> Resource<A> {
+func tryOrNil<A>(f:  () throws -> A) -> A? {
+    do {
+        return try f()
+    } catch {
+        return nil
+    }
+}
+
+public func jsonResource<A>(path: String, _ method: Method, _ requestParameters: JSONDictionary, _ validStatusCode: Int -> Bool, _ parse: AnyObject -> A?) -> Resource<A> {
 
     let f  = { flatten(decodeJSON($0).map(parse)) }
-    let jsonBody = requestParameters.count > 0 ? NSJSONSerialization.dataWithJSONObject(requestParameters, options: NSJSONWritingOptions.allZeros, error: nil) : nil
+
+    let jsonBody: NSData? = tryOrNil { try NSJSONSerialization.dataWithJSONObject(requestParameters, options: NSJSONWritingOptions()) }
     let headers = ["Content-Type": "application/json",
                    "Accept": "application/json"
                   ]

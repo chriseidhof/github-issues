@@ -77,7 +77,7 @@ extension UIViewController {
             return objc_getAssociatedObject(self, &AssociatedRightCompletionHandle) as? CompletionHandler
         }
         set {
-            objc_setAssociatedObject(self, &AssociatedRightCompletionHandle, newValue, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &AssociatedRightCompletionHandle, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
@@ -86,7 +86,7 @@ extension UIViewController {
             return objc_getAssociatedObject(self, &AssociatedLeftCompletionHandle) as? CompletionHandler
         }
         set {
-            objc_setAssociatedObject(self, &AssociatedLeftCompletionHandle, newValue, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &AssociatedLeftCompletionHandle, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
