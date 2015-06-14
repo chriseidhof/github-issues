@@ -8,43 +8,7 @@
 
 import UIKit
 import FunctionalViewControllers
-
-func app() -> UIViewController {
-    let addButton : Repository -> BarButton = { repo in
-        add(issueEditViewController()) { issueInfo in
-            request(repo.createIssueResource(issueInfo.title, body: issueInfo.body))
-        }
-    }
-    
-    let orgsScreen: LoginInfo -> Screen<Organization> = { loginInfo in
-        var navigationItem = defaultNavigationItem
-        navigationItem.title = "Organizations"
-        return resourceTableViewController(organizations(), standardCell { organization in
-            organization.login
-        }, navigationItem: navigationItem)
-    }
-    
-
-    let reposScreen: Organization -> Screen<Repository> = { org in
-        var navigationItem = defaultNavigationItem
-        navigationItem.title = org.login
-        return resourceTableViewController(org.reposResource, subtitleCell { repo in
-            (repo.name, repo.description_)
-        }, navigationItem: navigationItem)
-    }
-    
-    let issuesScreen: Repository -> Screen<Issue> = { repo in
-        var navigationItem = defaultNavigationItem
-        navigationItem.title = repo.name
-        return resourceTableViewController(repo.issuesResource, subtitleCell { issue in
-            (issue.title, issue.state.rawValue)
-        }, navigationItem: navigationItem)
-    }
-    
-    let flow = navigationController(loginViewController()) >>> orgsScreen >>> reposScreen >>> (issuesScreen <|> addButton)
-
-    return flow.run()
-}
+import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -53,8 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+
+        let context = setupStack()
+        seed(context)
+        
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        window?.rootViewController = app()
+        window?.rootViewController = coreDataApp(context) // app()
         window?.makeKeyAndVisible()
         return true
     }
